@@ -1,0 +1,14 @@
+@font-face {
+  font-family: 'Poppins';
+  src: url('/path/to/poppins.woff2') format('woff2'),
+       url('/path/to/poppins.woff') format('woff'),
+       url('/path/to/poppins.ttf') format('truetype');
+  /* Add additional font formats if necessary */
+  font-weight: normal;
+  font-style: normal;
+}
+
+.font-modern {
+  font-family: 'Poppins', sans-serif;
+  /* Additional CSS properties to style the font */
+}
