@@ -19,12 +19,12 @@ const FeatureCard = ({ cards = [1, 2, 3] }) => {
           
           <br />
         </h1>
-        <div className="flex flex-wrap -m-4 ">
+        <div className="flex flex-wrap -m-4 justify-center">
           {filterCategories?.map((card) => {
             return (
               <Link
                 to={`/categories/${card}`}
-                className="p-4 md:w-1/3 cursor-pointer capitalize "
+                className="p-4 md:w-1/4 cursor-pointer capitalize "
               >
                 <div className="flex rounded-lg h-full bg-red-100 p-8 flex-col hover:bg-red-300">
                   <div className="flex items-center mb-3">
