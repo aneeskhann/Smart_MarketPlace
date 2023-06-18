@@ -1,17 +1,21 @@
 import express from "express"
+import bodyParser from "body-parser"
+import cors from 'cors'
 import { connection } from './db/Connection.js'
 import product_router from "./routes/product_router.js" 
-import cors from 'cors'
 import userRoutes from './routes/userRoutes.js'
-import bodyParser from "body-parser"
+import morgan from 'morgan'
+
 
 
 const app = express()
-app.use(cors())
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.json())
 
-app.use('/upload',express.static('upload'));
+app.use(cors())
+app.use(express.json())
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(morgan('dev'))
+
+
 
 connection.then(() => {
   console.log("Connected.")
