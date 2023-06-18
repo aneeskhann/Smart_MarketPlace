@@ -3,15 +3,16 @@ import productsModel from "../model/productModel.js";
 // Controller function for creating a new product
 const createProduct = async (req, res) => {
   try {
-    const { title, price, description, category } = req.body;
+    const { title, price, description, category, rating } = req.body;
 
     const newProduct = new productsModel({
       title,
       price,
       description,
       category,
+      image: req.file.path,
+      rating,
     });
-
     const savedProduct = await newProduct.save();
 
     console.log("Product created successfully");
