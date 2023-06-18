@@ -1,10 +1,10 @@
 import axios from 'axios'
 
-export const postProduct= async (product)=>{
+export const postProduct= async (formData)=>{
   try{
-    const response= await axios.post("http://localhost:5000/product",product)
-    return response.data
-  }catch(e){
-    console.error(e)
+     await axios.post("http://localhost:5000/product",formData)
+    
+  }catch(error){
+    console.error(error)
   }
 }
