@@ -20,7 +20,7 @@ const Product = () => {
 
   useEffect(() => {
     const fetchProduct = async () => {
-      const response = await axios.get(`http://localhost:5000/product/${id}`);
+      const response = await axios.get(`https://wish-attire.onrender.com/product/${id}`);
       
       setProduct(response.data);
     };
