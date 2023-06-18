@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Loading from "../../components/Loaders/Loading";
+import axios from "axios";
 import Products from "../../components/Products/Products";
 import ProductMod from "../ProductMod/ProductMod";
 
@@ -19,10 +20,9 @@ const Product = () => {
 
   useEffect(() => {
     const fetchProduct = async () => {
-      const response = await fetch(`https://fakestoreapi.com/products/${id}`);
-      const data = await response.json();
-      console.log(data);
-      setProduct(data);
+      const response = await axios.get(`http://localhost:5000/product/${id}`);
+      
+      setProduct(response.data);
     };
     fetchProduct();
   }, []);

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { postProduct } from '../../api/productApi';
+import axios from 'axios';
 
 const PostProductForm = () => {
   const [productData, setProductData] = useState({
@@ -7,6 +7,8 @@ const PostProductForm = () => {
     price: 0,
     description: '',
     category: '',
+    image: ''
+
   });
 
   const handleChange = (e) => {
@@ -14,26 +16,38 @@ const PostProductForm = () => {
     console.log(productData)
   };
    
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const form= new FormData()
-
-    
-    
-    form.append('title',productData.title)
-    form.append('price',productData.price)
-    form.append('description',productData.description)
-    form.append('category',productData.category)
-    
-    // Send the productData to the server
-    await postProduct(productData); 
+  
+    // Check if any of the required fields are empty
+    if (!productData.title || !productData.price || !productData.description || !productData.category || !productData.image) {
+      console.error('Please fill in all the required fields');
+      return;
+    }
+  
+    try {
+      await axios.post('http://localhost:5000/product', productData);
+  
+      console.log('Product created successfully');
+  
+      // Reset all fields to their initial empty state
+      setProductData({
+        title: '',
+        price: 0,
+        description: '',
+        category: '',
+        image: ''
+      });
+    } catch (error) {
+      console.error('Failed to create product', error);
+      // Handle error response
+    } 
     // ... your code to post the data
   };
+  
 
   return (
-    <div className="max-w-md mx-auto">
+    <div className="max-w-md mx-auto mt-10">
       <form
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
         onSubmit={handleSubmit}
@@ -52,7 +66,6 @@ const PostProductForm = () => {
             type="text"
             value={productData.title}
             onChange={handleChange}
-            required
           />
         </div>
         <div className="mb-4">
@@ -67,7 +80,6 @@ const PostProductForm = () => {
             type="number"
             value={productData.price}
             onChange={handleChange}
-            required
           />
         </div>
         <div className="mb-4">
@@ -81,7 +93,6 @@ const PostProductForm = () => {
             name="description"
             value={productData.description}
             onChange={handleChange}
-            required
           ></textarea>
         </div>
         <div className="mb-4">
@@ -99,7 +110,21 @@ const PostProductForm = () => {
             required
           />
         </div>
-        
+        <div className="mb-4">
+            <label
+              htmlFor="image"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Image
+            </label>
+            <input
+              type="text"
+              id="image"
+              name="image" 
+              onChange={handleChange} 
+              className="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md text-base text-gray-800 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
         <div className="flex items-center justify-between">
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"

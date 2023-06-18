@@ -8,3 +8,14 @@ export const postProduct= async (formData)=>{
     console.error(error)
   }
 }
+
+export const getProducts= async (products)=>{
+  try{
+    const response = await axios.get(
+      "http://localhost:5000/product"
+    );
+    return response.data
+  }catch(error){
+    console.error(error)
+  }
+}

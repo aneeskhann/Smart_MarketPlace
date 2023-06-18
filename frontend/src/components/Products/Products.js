@@ -1,18 +1,11 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React from "react";
+import { Link } from "react-router-dom";
 
 
 const Products = ({ products }) => {
 
-  const location = useLocation();
-  const [filterProducts,setFilterProducts]=useState([]);
+  
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    const filter= products.filter((product)=> product.category !== 'electronics')
-    setFilterProducts(filter);
-  }, [location, products]);
 
   return (
     
@@ -20,13 +13,13 @@ const Products = ({ products }) => {
       
       <div className="container px-5 py-24 mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {filterProducts.map((product) => {
+          {products.map((product) => {
             console.log(product, "product");
-            const { id, title, price, description, category, image } = product;
+            const { _id, title, price, description, category, image } = product;
             return (
               <Link
-                to={`../products/${id}`}
-                key={id}
+                to={`../products/${_id}`}
+                key={_id}
                 className="border border-gray-300 rounded-lg overflow-hidden shadow-md hover:border-red-500 transition duration-300"
               >
                 <img
