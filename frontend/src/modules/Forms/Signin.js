@@ -52,7 +52,7 @@ const Signin = () => {
     >
       <div className="container px-5 py-24 mx-auto flex flex-wrap items-center ">
         <div className="lg:w-3/5 md:w-1/2 md:pr-16 lg:pr-0 pr-0">
-          <h1 className="title-font font-medium text-8xl text-white">Mocciani</h1>
+          <h1 className="title-font font-medium text-8xl text-white">WishAttire</h1>
           <p className="leading-relaxed mt-4 text-2xl">
             sign up and get your desired product now
           </p>

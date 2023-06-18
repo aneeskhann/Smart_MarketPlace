@@ -7,7 +7,7 @@ const Footer = () => {
         <div class="w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left">
           <a class="flex title-font font-medium items-center md:justify-start justify-center text-gray-900">
             
-            <span className="ml-3 text-xl">MŌCCIANI</span>
+            <span className="ml-3 text-xl">WishAttire</span>
           </a>
           <p class="mt-2 text-sm text-gray-500">
             Shop now for your necessary essentials online.
@@ -58,7 +58,7 @@ const Footer = () => {
       <div class="bg-red-500">
         <div class="container mx-auto py-4 px-5 flex flex-wrap flex-col sm:flex-row">
           <p class="text-white text-sm text-center sm:text-left">
-            © 2020 Mocciani —
+            © 2020 WishAttire —
             <a
               href="https://twitter.com/knyttneve"
               rel="noopener noreferrer"
