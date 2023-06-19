@@ -21,7 +21,7 @@ const Signup = () => {
     console.log(username, email, password);
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/users/signup",
+        "https://wish-attire.onrender.com/api/users/signup",
         { username, email, password }
       );
       console.log(username, email, password);
@@ -34,6 +34,7 @@ const Signup = () => {
         setUsername("");
         setPassword("");
         // Navigate to the signin page
+        navigate("/signin")
       } else {
         // Registration failed
         console.log("Registration error:", response.data.message);
