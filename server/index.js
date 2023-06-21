@@ -11,8 +11,9 @@ import morgan from 'morgan'
 const app = express()
 
 app.use(cors())
-app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json())
+app.use('/uploads',express.static('uploads'));
 app.use(morgan('dev'))
 
 

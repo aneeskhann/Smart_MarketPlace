@@ -1,26 +1,32 @@
 import mongoose from "mongoose";
 
-// Define the product schema
 const productSchema = new mongoose.Schema({
   title: {
-    type: String
+    type: String,
+    required: true,
   },
   price: {
-    type: Number
+    type: Number,
+    required: true,
   },
   description: {
-    type: String
+    type: String,
+    required: true,
   },
   category: {
-    type: String
+    type: String,
+    required: true,
   },
   image: {
-    type: String
-    
+    type: String,
+    required: true,
+  },
+  rating: {
+    rate: Number,
+    count: Number
   }
 });
 
-// Create the product model
-const ProductsModel = mongoose.model('Product', productSchema);
+const productsModel = mongoose.model("products", productSchema);
 
-export  {ProductsModel}
+export default productsModel;

@@ -28,11 +28,11 @@ const isImage=(req,file,callBack)=>{
        callBack(null,true)
    }else{
 
-       callBack(new Error("Only Imge Allow here"))
+       callBack(new Error("Upload a valid image"))
    }
 }
 
-export const imageUpload=multer({
+export const upload=multer({
 
    storage:imgConfig,
    fileFilter:isImage
