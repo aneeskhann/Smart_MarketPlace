@@ -1,24 +1,39 @@
 import multer from "multer";
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./upload/");
-  },
-  filename: function (req, file, cb) {
-    cb(null, new Date().toISOString() + file.originalname);
-  },
-});
-const fileFilter = (req, file, cb) => {
-  if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
-    cb(null, true);
-  } else {
-    cb(null, false);
-  }
-};
+const imgConfig=multer.diskStorage({
 
-const upload = multer({
-  storage: storage,
-  fileFilter: fileFilter,
-});
 
-export { upload };
+
+destination:(req,file,callBack)=>{
+   console.log("I am i destination : ")
+   callBack(null,"./uploads/")
+   
+},
+
+
+filename:(req,file,callBack)=>{
+   console.log(file);
+
+   callBack(null,`image-${Date.now()}.${file.originalname}`)
+}
+
+
+})
+
+
+const isImage=(req,file,callBack)=>{
+
+   if (file.mimetype.startsWith("image")) {
+       
+       callBack(null,true)
+   }else{
+
+       callBack(new Error("Only Imge Allow here"))
+   }
+}
+
+export const imageUpload=multer({
+
+   storage:imgConfig,
+   fileFilter:isImage
+});
