@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Store_Context } from "../../Context/Context";
 
@@ -40,7 +40,7 @@ const Cart = () => {
   // }
 
   return (
-    <div className="container mx-auto mt-10">
+    <div className="container mx-auto mt-10 ">
       <div className="flex shadow-md my-10">
         <div className="w-3/4 bg-white px-10 py-10">
           <div className="flex justify-between border-b pb-8">
@@ -183,7 +183,7 @@ const Cart = () => {
               <span>Total cost</span>
               <span>${totalBill + 10}</span>
             </div>
-            <button className="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">
+            <button className="bg-green-900 font-semibold hover:bg-green-800 py-3 text-sm text-white uppercase w-full">
               Checkout
             </button>
           </div>

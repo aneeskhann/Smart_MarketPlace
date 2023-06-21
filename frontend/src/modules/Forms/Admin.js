@@ -26,7 +26,7 @@ const PostProductForm = () => {
     }
   
     try {
-      await axios.post('http://localhost:5000/product', productData);
+      await axios.post('https://wish-attire.onrender.com/product', productData);
   
       console.log('Product created successfully');
   

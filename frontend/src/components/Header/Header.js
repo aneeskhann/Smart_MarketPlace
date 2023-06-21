@@ -62,11 +62,11 @@ const Header = () => {
           </span>
         </Link>
 
-        <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center cursor-pointer">
+        <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center cursor-pointer " >
           {navigations.map((navigation) => (
             <Link
               to={navigation.path}
-              className="mr-5 text-sm font-sans text-red-600 hover:text-black capitalize"
+              className="mr-5 text-sm font-sans text-red-600 hover:text-black capitalize border border-white rounded-lg overflow-hidden hover:border-red-500 transition duration-300 p-0.5"
               key={navigation.name}
             >
               {navigation.name}

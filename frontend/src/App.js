@@ -13,6 +13,7 @@ import Contact from './components/Contact/Contact';
 import Signin from './modules/Forms/Signin';
 import Signup from './modules/Forms/Signup';
 import PostProductForm from './modules/Forms/Admin';
+import FAQS from './components/FAQS/FAQS';
 
 //comment
 function App() {
@@ -31,6 +32,7 @@ function App() {
         <Route path='/signin' element={<Signin/>}/>
         <Route path='/signup' element={<Signup/>}/>
         <Route path='/add' element={<PostProductForm/>}/>
+        <Route path= '/faqs' element= {<FAQS/>}/>
         <Route path= '*' element = {<div>404</div>}/>
       </Routes>
       <Footer/>
