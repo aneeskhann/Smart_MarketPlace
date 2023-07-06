@@ -68,7 +68,7 @@ const Cart = () => {
                   <div className="w-20">
                     <img
                       className="h-24"
-                      src={cartItems?.image}
+                      src={`http://localhost:5000/`+cartItems?.image}
                       alt={cartItems?.title}
                     />
                   </div>

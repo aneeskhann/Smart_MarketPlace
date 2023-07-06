@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Loading from "../../components/Loaders/Loading";
 import axios from "axios";
-import Products from "../../components/Products/Products";
-import ProductMod from "../ProductMod/ProductMod";
 
 const Product = () => {
   const { id } = useParams();
@@ -20,7 +18,7 @@ const Product = () => {
 
   useEffect(() => {
     const fetchProduct = async () => {
-      const response = await axios.get(`https://wish-attire.onrender.com/product/${id}`);
+      const response = await axios.get(`http://localhost:5000/product/${id}`);
       
       setProduct(response.data);
     };
@@ -64,16 +62,16 @@ const Product = () => {
       <div className="container px-5 py-24 mx-auto">
         <div className="lg:w-4/5 mx-auto flex flex-wrap">
           <img
-            alt={product.title}
+            alt={product?.title}
             className="lg:w-1/2 w-full lg:h-auto max-h-[600px] h-64 object-center object-contain rounded "
-            src={`https://wish-attire.onrender.com/`+product.image}
+            src={`http://localhost:5000/`+product?.image}
           />
           <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
             <h2 className="text-sm title-font text-gray-500 tracking-widest">
-              {product.category}
+              {product?.category}
             </h2>
             <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">
-              {product.title}
+              {product?.title}
             </h1>
             <div className="flex mb-4">
               <span className="flex items-center">
@@ -173,7 +171,7 @@ const Product = () => {
                 </a>
               </span>
             </div>
-            <p className="leading-relaxed">{product.description}</p>
+            <p className="leading-relaxed">{product?.description}</p>
             <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
               <div className="flex">
                 <span className="mr-3">Color</span>

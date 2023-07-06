@@ -6,13 +6,11 @@ const Products = ({ products }) => {
 
 
   return (
-    
     <section className="text-gray-600 body-font">
   <div className="container px-4 py-24 mx-auto">
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       {products.map((product) => {
         console.log(product, "product");
-        console.log(product.image)
         return (
           <Link
             to={`../products/${product._id}`}

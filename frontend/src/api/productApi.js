@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const url= "https://wish-attire.onrender.com"
+const url= "http://localhost:5000"
 
 export const postProduct= async (formData)=>{
   try{
@@ -20,3 +20,14 @@ export const getProducts = async () => {
     throw new Error("Failed to fetch products");
   }
 };
+
+export const getProductById= async (id)=>{
+  try{
+    const item =await axios.get(url+'/product/'+id);
+    console.log(item)
+    return item.data;
+  }catch(e){
+    console.log(e)
+  }
+  
+}
