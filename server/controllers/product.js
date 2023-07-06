@@ -29,10 +29,11 @@ const createProduct = async (req, res) => {
 
 const getProducts = async (req, res) => {
   try {
+
     const products = await productsModel.find().exec();
     const items = products.map((product) => ({
       ...product._doc,
-      image: "https://wish-attire.onrender.com/" + product.image,
+      image: "http://localhost:5000/" + product.image,
     }));
     console.log("get all products")
     res.status(200).json(items);

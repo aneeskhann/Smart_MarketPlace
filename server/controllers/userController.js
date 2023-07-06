@@ -50,4 +50,30 @@ const login = async (req, res) => {
   }
 };
 
-export { signup, login };
+const getUsers = async (req, res) => {
+  try {
+    const users = await User.find().exec();
+    const items = users.map((user) => ({
+      username: user.username,
+      email: user.email,
+    }));
+    console.log("get all users");
+    res.status(200).json(items);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to fetch users" });
+  }
+};
+
+  const deleteUser = async (req, res) => {
+  try {
+    const { username } = req.params;
+    await User.findOneAndDelete({ username });
+    res.status(200).json({ message: 'User deleted successfully' });
+  } catch (error) {
+    console.error('Failed to delete user:', error);
+    res.status(500).json({ error: 'Failed to delete user' });
+  }
+}
+
+export { signup, login, getUsers, deleteUser };
