@@ -1,6 +1,5 @@
 import { createContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { getProducts } from "../api/productApi";
 
 const Store_Context= createContext()
