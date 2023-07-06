@@ -29,10 +29,16 @@ const createProduct = async (req, res) => {
 
 const getProducts = async (req, res) => {
   try {
-    const products = await productsModel.find();
-    res.status(200).json(products);
+    const products = await productsModel.find().exec();
+    const items = products.map((product) => ({
+      ...product._doc,
+      image: "https://wish-attire.onrender.com/" + product.image,
+    }));
+    console.log("get all products")
+    res.status(200).json(items);
   } catch (error) {
-    res.status(500).json({ error: "Failed to retrieve products" });
+    console.error(error);
+    res.status(500).json({ error: "Failed to fetch products" });
   }
 };
 
