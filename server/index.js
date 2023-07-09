@@ -25,8 +25,6 @@ connection.then(() => {
   console.log(e)
 })
 app.use('/product', product_router)
-app.use('/api/users', userRoutes)
-app.use('/api/login', userRoutes)
 app.use('/api', userRoutes)
 app.get('/',(req,res)=>{
   res.json({message:"Welcome to server"})

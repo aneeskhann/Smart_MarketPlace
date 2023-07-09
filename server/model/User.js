@@ -4,7 +4,8 @@ import bcrypt from 'bcrypt'
 const userSchema = new mongoose.Schema({
   username:String,
   email:String,
-  password:String
+  password:String,
+  role: String
 });
 
 userSchema.pre('save', async function(next) {

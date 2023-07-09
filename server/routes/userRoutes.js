@@ -10,6 +10,6 @@ router.post('/login', login);
 
 router.get('/user', getUsers)
 
-router.delete('/user/:username', deleteUser)
+router.delete('/user/:userId', deleteUser)
 
 export default router
