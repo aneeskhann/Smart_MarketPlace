@@ -64,7 +64,7 @@ const Product = () => {
           <img
             alt={product?.title}
             className="lg:w-1/2 w-full lg:h-auto max-h-[600px] h-64 object-center object-contain rounded "
-            src={`http://localhost:5000/`+product?.image}
+            src={`https://wish-attire.onrender.com/`+product?.image}
           />
           <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
             <h2 className="text-sm title-font text-gray-500 tracking-widest">
