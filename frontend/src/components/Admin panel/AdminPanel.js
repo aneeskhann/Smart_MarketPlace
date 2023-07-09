@@ -1,31 +1,28 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { fetchUsers } from "../../api/userApi";
+import { deleteUser, fetchUsers } from "../../api/userApi";
 
 const AdminPanel = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const getUsers = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/user");
-        const data = response.data;
+        const data = await fetchUsers()
         setUsers(data);
       } catch (error) {
         console.error("Failed to fetch users:", error);
       }
     };
 
-    fetchUsers();
+    getUsers();
   }, []);
 
-  const handleRemoveUser = async (username) => {
-    try {
-      await axios.delete(`http://localhost:5000/api/user/${username}`);
-      // Update the user list by fetching the updated data from the server
-      fetchUsers();
-    } catch (error) {
-      console.error("Failed to remove user:", error);
+  const handleRemoveUser = async (userId) => {
+    try{
+      await deleteUser(userId)
+      setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId))
+    }catch(error){
+      console.error("Error removing user:", error)
     }
   };
 
@@ -35,6 +32,7 @@ const AdminPanel = () => {
       <table className="w-full border-collapse">
         <thead>
           <tr>
+            <th className="py-2 px-4 border-b">id</th>
             <th className="py-2 px-4 border-b">Username</th>
             <th className="py-2 px-4 border-b">Email</th>
             <th className="py-2 px-4 border-b">Role</th>
@@ -43,7 +41,8 @@ const AdminPanel = () => {
         </thead>
         <tbody>
           {users.map((user) => (
-            <tr key={user.id} className="hover:bg-gray-100">
+            <tr key={user._id} className="hover:bg-gray-100">
+              <td className="py-2 px-4 border-b text-center">{user._id}</td>
               <td className="py-2 px-4 border-b text-center">
                 {user.username}
               </td>
@@ -51,7 +50,7 @@ const AdminPanel = () => {
               <td className="py-2 px-4 border-b text-left">{user.role}</td>
               <td className="py-2 px-4 border-b">
                 <button
-                  onClick={() => handleRemoveUser(user.id)}
+                  onClick={() => handleRemoveUser(user._id)}
                   className="bg-red-500 text-white px-4 py-2 rounded"
                   style={{
                     display: "flex",
