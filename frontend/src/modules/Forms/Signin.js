@@ -20,7 +20,7 @@ const Signin = () => {
     e.preventDefault();
     console.log(username)
     try{
-      const response = await axios.post('https://wish-attire.onrender.com/api/users/login', {
+      const response = await axios.post('https://wish-attire.onrender.com/api/login', {
         username: username,
         password: password
       });

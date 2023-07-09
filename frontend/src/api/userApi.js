@@ -11,3 +11,13 @@ export const fetchUsers = async () => {
     throw new Error("Failed to fetch users");
   }
 }
+
+export const deleteUser = async (userId) => {
+  try{
+    const response = await axios.delete(`${url}/api/user/${userId}`)
+    console.log(response.data)
+  }catch(error){
+    console.log(error)
+    throw new Error("Failed to delete user")
+  }
+}
