@@ -10,6 +10,7 @@ const Signup = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("")
   const location = useLocation();
 
   useEffect(() => {
@@ -22,7 +23,7 @@ const Signup = () => {
     try {
       const response = await axios.post(
         "http://localhost:5000/api/signup",
-        { username, email, password }
+        { username, email, password, role }
       );
       console.log(username, email, password);
       if (response.data.message === "User registered successfully") {
@@ -91,6 +92,25 @@ const Signup = () => {
                 onChange={(e) => setEmail(e.currentTarget.value)}
                 value={email}
               />
+            </div>
+            <div className="relative mb-4">
+              <label
+                htmlFor="role"
+                className="leading-7 text-sm text-gray-900"
+              >
+                Role
+              </label>
+              <select
+                id="role"
+                name="role"
+                className="w-full bg-white rounded border border-gray-300 focus:border-red-500 focus:ring-2 focus:ring-red-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                value={role}
+                onChange={(e) => setRole(e.currentTarget.value)}
+              >
+                <option value="admin">Admin</option>
+                <option value="buyer">Buyer</option>
+                <option value="seller">Seller</option>
+              </select>
             </div>
             <div className="relative mb-4">
               <label
