@@ -1,74 +1,120 @@
-import React, { useEffect, useState } from "react";
-import { deleteUser, fetchUsers } from "../../api/userApi";
+import React, { useContext, useEffect, useState } from "react";
+import { deleteUser, fetchUsers, updateUser } from "../../api/userApi";
+import ViewUsers from "./components/ViewUser";
+import AddUser from "./components/AddUser";
+import ModifyUser from "./components/ModifyUser";
+import DeleteUser from "./components/DeleteUser";
+import { Store_Context } from "../../Context/Context";
 
 const AdminPanel = () => {
   const [users, setUsers] = useState([]);
+  const [currentPage, setCurrentPage] = useState('view')
+  const {currentUser} = useContext(Store_Context)
 
-  useEffect(() => {
-    const getUsers = async () => {
-      try {
-        const data = await fetchUsers()
-        setUsers(data);
-      } catch (error) {
-        console.error("Failed to fetch users:", error);
-      }
-    };
-
-    getUsers();
-  }, []);
-
-  const handleRemoveUser = async (userId) => {
-    try{
-      await deleteUser(userId)
-      setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId))
-    }catch(error){
-      console.error("Error removing user:", error)
+  const getUsers = async () => {
+    try {
+      const data = await fetchUsers(currentUser.access_Token)
+      setUsers(data);
+    } catch (error) {
+      console.error("Failed to fetch users:", error);
     }
   };
 
+  useEffect(() => {
+   
+   
+    getUsers();
+  }, [currentPage]);
+
+  
+
+  const renderPage = () => {
+    console.log(currentUser)
+    switch (currentPage) {
+      case 'add':
+        return <AddUser />;
+      case 'view':
+        return <ViewUsers users={users} getUsers={getUsers} />;
+      case 'update':
+        return <ModifyUser />;
+      case 'delete':
+        return <DeleteUser users={users} getUsers={getUsers} />;
+      case 'modify':
+        return <ModifyUser users={users} getUsers={getUsers}/>
+      default:
+        return null;
+    }
+  };
+
+  if(currentUser.role==='admin'){
+    
+
+    return (
+      <div>
+         <div className="container mx-auto py-6">
+         <h1 className="text-4xl font-bold text-center mb-8">Welcome to Admin Dashboard</h1>
+         <Navbar setCurrentPage={setCurrentPage} />
+          
+          <div className="container mx-auto py-6">{renderPage()}</div>
+        </div>
+        
+       
+      </div>
+    );
+    }else{
+      return(
+        <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
+        <h1 className="text-3xl font-bold mb-4">You do not have permission to view this page</h1>
+        <p className="text-gray-500">Please contact the administrator for assistance.</p>
+      </div>
+      )
+    }
+
+ 
+};
+
+const Navbar = ({ setCurrentPage }) => {
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-semibold mb-4 text-center">Admin Panel</h1>
-      <table className="w-full border-collapse">
-        <thead>
-          <tr>
-            <th className="py-2 px-4 border-b">id</th>
-            <th className="py-2 px-4 border-b">Username</th>
-            <th className="py-2 px-4 border-b">Email</th>
-            <th className="py-2 px-4 border-b">Role</th>
-            <th className="py-2 px-4 border-b">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user) => (
-            <tr key={user._id} className="hover:bg-gray-100">
-              <td className="py-2 px-4 border-b text-center">{user._id}</td>
-              <td className="py-2 px-4 border-b text-center">
-                {user.username}
-              </td>
-              <td className="py-2 px-4 border-b text-center">{user.email}</td>
-              <td className="py-2 px-4 border-b text-left">{user.role}</td>
-              <td className="py-2 px-4 border-b">
-                <button
-                  onClick={() => handleRemoveUser(user._id)}
-                  className="bg-red-500 text-white px-4 py-2 rounded"
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: "fit-content",
-                    margin: "0 auto",
-                  }}
-                >
-                  Remove
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <nav className="bg-red-500 py-4 px-6 mb-6">
+      
+      <ul className="flex justify-center">
+        <li>
+          <button
+            className="text-white hover:text-gray-300 ml-4"
+            onClick={() => setCurrentPage("add")}
+          >
+            Add User
+          </button>
+        </li>
+        <li>
+          <button
+            className="text-white hover:text-gray-300 mx-4"
+            onClick={() => setCurrentPage("view")}
+          >
+            View Users
+          </button>
+        </li>
+        <li>
+          <button
+            className="text-white hover:text-gray-300 mr-4"
+            onClick={() => setCurrentPage("delete")}
+          >
+            Delete Users
+          </button>
+        </li>
+        <li>
+          <button
+            className="text-white hover:text-gray-300 mr-4"
+            onClick={() => setCurrentPage("modify")}
+          >
+            Update Users
+          </button>
+        </li>
+      </ul>
+    </nav>
   );
 };
+
+
 
 export default AdminPanel;

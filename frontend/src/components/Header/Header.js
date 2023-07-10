@@ -32,8 +32,8 @@ const Header = () => {
     },
     {
       name: "Sell-Item",
-      path: "/add"
-    }
+      path: "/add",
+    },
   ];
 
   return (
@@ -51,41 +51,56 @@ const Header = () => {
       </div>
 
       <div className="container mx-auto flex flex-wrap p-2 flex-col md:flex-row items-center">
-        <img src={logo} alt="logo" className="md:cursor-pointer h-10 ml-2 bg-white" />
+      <div className="flex items-center justify-center">
+      <img
+        src={logo}
+        alt="logo"
+        className="md:cursor-pointer h-10 ml-2 bg-white"
+      />
 
+      <Link
+        to="/"
+        className="flex cursor-pointer title-font font-medium items-center mb-4 md:mb-0"
+      >
+        <span className="font-roboto text-3xl text-red-800 tracking-wide">
+          WishAttire
+        </span>
+      </Link>
+    </div>
+
+        <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center justify-center text-base cursor-pointer">
+      {navigations.map((navigation) => (
         <Link
-          to="/"
-          className="flex cursor-pointer title-font font-medium items-center mb-4 md:mb-0 "
+          to={navigation.path}
+          className="mr-5 text-sm font-sans text-red-600 hover:text-black capitalize border border-white rounded-lg overflow-hidden hover:border-red-500 transition duration-300 p-1"
+          key={navigation.name}
         >
-          <span className="font-roboto text-2xl text-red-800">
-            WishAttire
-          </span>
+          {navigation.name}
         </Link>
-
-        <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center cursor-pointer " >
-          {navigations.map((navigation) => (
-            <Link
-              to={navigation.path}
-              className="mr-5 text-sm font-sans text-red-600 hover:text-black capitalize border border-white rounded-lg overflow-hidden hover:border-red-500 transition duration-300 p-0.5"
-              key={navigation.name}
-            >
-              {navigation.name}
-            </Link>
-          ))}
-        </nav>
+      ))}
+    </nav>
         {/* <button
           onClick={handleThemeToggle}
           className="inline-flex items-center text-white bg-red-500 border-0 py-2 px-4 focus:outline-none hover:bg-red-600 rounded-full text-base ml-10 mt-4 md:mt-0 mr-5 transition duration-300"
         >
           {isDarkMode ? "Light Mode" : "Dark Mode"}
         </button> */}
-
-        <Link
-          to="./signin"
-          className="inline-flex items-center text-white bg-red-500 border-0 py-1 px-3 focus:outline-none hover:bg-red-600 rounded-full text-base mt-4 md:mt-0  transition duration-300"
-        >
-          Sign in
-        </Link>
+        <div className="pr-3">
+          <Link
+            to="/adminpanel"
+            className="inline-flex items-center text-red-500 border-2 border-red-500 py-1 px-3 focus:outline-none hover:bg-red-500 hover:text-white rounded-full text-base mt-4 md:mt-0 mr-2 transition duration-300"
+          >
+            Admin
+          </Link>
+        </div>
+        <div>
+          <Link
+            to="./signin"
+            className="inline-flex items-center text-red-500 border-2 border-red-500 py-1 px-3 focus:outline-none hover:bg-red-500 hover:text-white rounded-full text-base mt-4 md:mt-0 mr-2 transition duration-300"
+          >
+            Sign in
+          </Link>
+        </div>
         <div className="pr-5">
           <Badge
             badgeContent={carts.length}

@@ -1,4 +1,4 @@
-import { createContext, useEffect, useRef, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getProducts } from "../api/productApi";
 
@@ -11,6 +11,7 @@ const Store_Provider= ({children}) => {
 
   const [products, setProducts] = useState([]);
   const [totalBill, setTotalBill] = useState(0);
+  const [currentUser, setCurrentUser] = useState({})
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -89,7 +90,9 @@ const Store_Provider= ({children}) => {
     handleDec,
     products,
     totalBill,
-    carts
+    carts,
+    currentUser,
+    setCurrentUser
     
   };
   return(

@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import image1 from "../../Assets/image1.jpg";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from 'axios'
+import { Store_Context } from "../../Context/Context";
 
 
 const Signin = () => {
@@ -11,39 +12,39 @@ const Signin = () => {
   const [password, setPassword] = useState();
   const location = useLocation();
   const navigate = useNavigate()
+  const {setCurrentUser}= useContext(Store_Context)
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location]);
 
-  const handleLogin =async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.log(username)
-    try{
-      const response = await axios.post('https://wish-attire.onrender.com/api/login', {
+
+    try {
+      const response = await axios.post("http://localhost:5000/api/login", {
         username: username,
-        password: password
+        password: password,
       });
-      const userData = response.data
+      const userData = response.data;
 
-      if(userData.valid){
-        console.log("Login Successful")
+      setCurrentUser(userData);
+      console.log("Login Successful");
 
-        navigate('/')
-        
-      }else{
-        console.log("Login Denied!!")
-        alert("Username or Password incorrect.")
+      if (userData.role === "admin") {
+        navigate("/adminpanel");
+      } else if (userData.role === "seller") {
+        navigate("/add");
+      } else if (userData.role === "client") {
+        navigate("/");
       }
-    }catch(error){
-      console.error("Login error: ", error)
-      alert("An error occurred during login")
+    } catch (error) {
+      console.error("Login error: ", error);
+      alert("An error occurred during login");
     }
-    
-
-    setUsername("");
-    setPassword("");
   };
+
+  
 
   return (
     <section
