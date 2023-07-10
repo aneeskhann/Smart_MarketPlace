@@ -1,6 +1,10 @@
 import { response } from "express";
 import User from "../model/User.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 const signup = async (req, res) => {
   try {
@@ -34,21 +38,25 @@ const login = async (req, res) => {
 
   try {
     const user = await User.findOne({ username });
+
     if (!user) {
-      return response.status(404).json({ message: "user not found" });
-    }
-    
-    const passwordMatch = bcrypt.compare(password, user.password);
-    if (!passwordMatch) {
-      return response.status(401).json({ message: "Invalid credentials" });
+      return res.status(401).json({ valid: false, message: "Invalid credentials" });
     }
 
-    res.status(200).json({ valid: true });
+    const passwordMatch = bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
+      return res.status(401).json({ valid: false, message: "error" });
+    }
+
+    const access_Token = jwt.sign({ ...user._doc }, process.env.ACCESS_TOKEN_SECRET);
+    res.status(200).json({...user._doc, access_Token: access_Token} );
+    
   } catch (error) {
-    console.error("Login error", error);
-    res.status(500).json({ message: "Login failed" });
+    console.error("Login error:", error);
+    res.status(500).json({ valid: false, message: "Login failed" });
   }
 };
+
 
 const getUsers = async (req, res) => {
   try {
@@ -62,7 +70,7 @@ const getUsers = async (req, res) => {
   }
 };
 
-  const deleteUser = async (req, res) => {
+const deleteUser = async (req, res) => {
   try {
     const deleteUser = await User.findByIdAndDelete(req.params.userId)
     if(!deleteUser) {
@@ -75,4 +83,35 @@ const getUsers = async (req, res) => {
   }
 }
 
-export { signup, login, getUsers, deleteUser };
+const updateUser = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const updatedUser = req.body;
+    console.log(req.body)
+
+    // Check if the user exists
+    const user = await User.findByIdAndUpdate(userId, updatedUser,{
+      new: true, 
+      runValidators: true
+    });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update the user fields
+    user.username = updatedUser.username || user.username;
+    user.email = updatedUser.email || user.email;
+    user.role = updatedUser.role || user.role;
+
+    // Save the updated user
+    const savedUser = await user.save();
+
+    res.status(200).json(savedUser);
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+
+export { signup, login, getUsers, deleteUser, updateUser };
