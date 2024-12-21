@@ -1,103 +1,110 @@
-import { createContext, useContext, useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { createContext, useState, useEffect } from "react";
+import {getUserDetails} from  "../api/userApi";
 import { getProducts } from "../api/productApi";
 
-const Store_Context= createContext()
+// Create the context
+const StoreContext = createContext();
 
-const Store_Provider= ({children}) => {
-  const navigate = useNavigate();
-  const carts = JSON.parse(localStorage.getItem("cart")) || [];
-  const inputRef = useRef(null); 
-
+const StoreProvider = ({ children }) => {
+  const [currentUser, setCurrentUser] = useState(null);
   const [products, setProducts] = useState([]);
   const [totalBill, setTotalBill] = useState(0);
-  const [currentUser, setCurrentUser] = useState({})
+  const [userRole, setUserRole] = useState(null);
 
+
+
+
+  // Function to log in a user
+  const login = (user) => {
+    setCurrentUser(user);
+    localStorage.setItem("currentUser", JSON.stringify(user));
+  };
+
+  // Function to log out a user
+  const logout = () => {
+    setCurrentUser(null);
+    localStorage.removeItem("currentUser");
+  };
+
+  // Load user data from localStorage if available
+  useEffect(() => {
+    const storedUser = localStorage.getItem("currentUser");
+     if (storedUser) {
+      const parsedUser = JSON.parse(storedUser);
+      setCurrentUser(parsedUser);
+      fetchUserRole(parsedUser.id);
+     }
+  }, []);
+
+  const fetchUserRole = async (userId) => {
+    try {
+      // Fetch user details from the API
+      const userDetails = await getUserDetails(userId); // Use the imported API function to get user details
+      setUserRole(userDetails.role); // Assuming the API response contains a `role` field
+    } catch (error) {
+      console.error("Error fetching user role:", error);
+    }
+  };
+  
+
+  // Fetch products from the API
   useEffect(() => {
     const fetchProducts = async () => {
-      const data= await getProducts()
-      
+      const data = await getProducts();
       setProducts(data);
     };
     fetchProducts();
   }, []);
 
+  // Calculate total bill from cart
+  const carts = JSON.parse(localStorage.getItem("cart")) || [];
   useEffect(() => {
-    if (carts.length === 0) {
-      setTotalBill(0);
-      return;
-    }
-
     let total = 0;
     carts.forEach((cartItem) => {
       total += cartItem.price * cartItem.quantity;
     });
-
-    
     total = Number(total.toFixed(2));
-
     setTotalBill(total);
   }, [carts]);
 
- 
-
+  // Functions to handle cart operations
   const handleInc = (id) => {
     const updatedCart = carts.map((item) => {
       if (item.id === id) {
-        return {
-          ...item,
-          quantity: item.quantity + 1,
-        };
+        return { ...item, quantity: item.quantity + 1 };
       }
       return item;
     });
     localStorage.setItem("cart", JSON.stringify(updatedCart));
-    navigate("/cart");
   };
 
   const handleDec = (id) => {
     const updatedCart = carts.map((item) => {
       if (item.id === id) {
-        return {
-          ...item,
-          quantity: item.quantity - 1,
-        };
+        return { ...item, quantity: item.quantity - 1 };
       }
       return item;
     });
     localStorage.setItem("cart", JSON.stringify(updatedCart));
-    navigate("/cart");
   };
 
-  // const updateQuantity= (id) => {
-  //   const updateCart= carts.map((item) => {
-  //     if(item.id === id) {
-  //       return {
-  //         ...item,
-  //         quantity: parseInt(inputRef.current.value),
-  //       }
-  //     }
-  //     return item;
-  //   })
-  //   localStorage.setItem("cart", JSON.stringify(updateCart))
-  //   navigate("/cart")
-  // }
-  
-
-
-  const store= {
-    handleInc,
-    handleDec,
+  // Store object passed to the context
+  const store = {
+    currentUser,
+    setCurrentUser,
+    login,
+    logout,
     products,
     totalBill,
     carts,
-    currentUser,
-    setCurrentUser
-    
+    handleInc,
+    handleDec,
+    userRole,
+    fetchUserRole,
+    setUserRole
   };
-  return(
-    <Store_Context.Provider value={store}>{children}</Store_Context.Provider>
-  )
-}
 
-export {Store_Provider, Store_Context };
+  return <StoreContext.Provider value={store}>{children}</StoreContext.Provider>;
+};
+
+export { StoreProvider, StoreContext };

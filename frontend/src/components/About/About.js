@@ -1,56 +1,82 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import faizan from "../../Assets/faizan.jpg";
+import anees from "../../Assets/anees.jpg";
 import Content from "./Content";
 
 const About = () => {
   return (
     <>
-    <Link to={"/about"} class="text-gray-600 body-font">
-      <div class="container px-5 py-24 mx-auto">
-        <div class="flex flex-wrap -m-4 justify-around">
-          <div class="lg:w-1/3 lg:mb-0 mb-6 p-4">
-            <div class="h-full text-center">
-              <img
-                alt="testimonial"
-                class="w-20 h-20 mb-8 object-cover object-center rounded-full inline-block border-2 border-gray-200 bg-gray-100"
-                src={faizan}
-              />
-              <p class="leading-relaxed">
-                building interactive and responsive user interfaces.
-                Continuously learning and staying updated with the latest trends
-                and best practices in React development, Faizan is eager to
-                contribute to projects and deliver high-quality React-based
-                solutions.
-              </p>
-              <span class="inline-block h-1 w-10 rounded bg-red-500 mt-6 mb-4"></span>
-              <h2 class="text-gray-900 font-medium title-font tracking-wider text-sm">
-                Faizan
-              </h2>
-              <p class="text-gray-500">UI Develeoper</p>
+      <Link to={"/about"} className="text-gray-600 body-font">
+        <div className="container px-5 py-24 mx-auto">
+          <div className="flex flex-wrap -m-4 justify-around">
+            {/* First Section */}
+            <div className="lg:w-1/3 lg:mb-0 mb-6 p-4">
+              <div className="h-full text-center">
+                <img
+                  alt="testimonial"
+                  className="w-20 h-20 mb-8 object-cover object-center rounded-full inline-block border-2 border-gray-200 bg-gray-100"
+                  src={anees}
+                />
+                <p className="leading-relaxed">
+                  Building interactive and responsive user interfaces.
+                  Continuously learning and staying updated with the latest
+                  trends and best practices in React development, Faizan is
+                  eager to contribute to projects and deliver high-quality
+                  React-based solutions.
+                </p>
+                <span className="inline-block h-1 w-10 rounded bg-red-500 mt-6 mb-4"></span>
+                <h2 className="text-gray-900 font-medium title-font tracking-wider text-sm">
+                  Muhammad Anees
+                </h2>
+                <p className="text-gray-500">UI Developer</p>
+              </div>
             </div>
-          </div>
-          <div class="lg:w-1/3 lg:mb-0 p-4">
-            <div class="h-full text-center">
-              <img
-                alt="testimonial"
-                class="w-20 h-20 mb-8 object-cover object-center rounded-full inline-block border-2 border-gray-200 bg-gray-100"
-                src="https://dummyimage.com/305x305"
-              />
-              <p class="leading-relaxed">
-                Building Logics and bringing the website to life. Fawad is a Backend Developer that has urge to learn more about building projects on react.
-              </p>
-              <span class="inline-block h-1 w-10 rounded bg-red-500 mt-6 mb-4"></span>
-              <h2 class="text-gray-900 font-medium title-font tracking-wider text-sm">
-                Fawad Iqbal
-              </h2>
-              <p class="text-gray-500">Backend Developer</p>
+
+            {/* Second Section */}
+            <div className="lg:w-1/3 lg:mb-0 mb-6 p-4">
+              <div className="h-full text-center">
+                <img
+                  alt="testimonial"
+                  className="w-20 h-20 mb-8 object-cover object-center rounded-full inline-block border-2 border-gray-200 bg-gray-100"
+                  src="https://dummyimage.com/305x305"
+                />
+                <p className="leading-relaxed">
+                  Building logics and bringing the website to life. yaman is a
+                  Backend Developer with a strong urge to learn more about
+                  building projects on React.
+                </p>
+                <span className="inline-block h-1 w-10 rounded bg-red-500 mt-6 mb-4"></span>
+                <h2 className="text-gray-900 font-medium title-font tracking-wider text-sm">
+                  Yaman Husain
+                </h2>
+                <p className="text-gray-500">Backend Developer</p>
+              </div>
+            </div>
+
+            {/* Third Section */}
+            <div className="lg:w-1/3 lg:mb-0 mb-6 p-4">
+              <div className="h-full text-center">
+                <img
+                  alt="testimonial"
+                  className="w-20 h-20 mb-8 object-cover object-center rounded-full inline-block border-2 border-gray-200 bg-gray-100"
+                  src="https://dummyimage.com/306x306"
+                />
+                <p className="leading-relaxed">
+                  Passionate about designing seamless user experiences. uzair
+                  specializes in crafting beautiful UI/UX designs, focusing on
+                  creating user-friendly and visually appealing interfaces.
+                </p>
+                <span className="inline-block h-1 w-10 rounded bg-red-500 mt-6 mb-4"></span>
+                <h2 className="text-gray-900 font-medium title-font tracking-wider text-sm">
+                  Uzair Ali
+                </h2>
+                <p className="text-gray-500">Project Designer</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </Link>
-    <Content/>
+      </Link>
+      <Content />
     </>
   );
 };

@@ -1,13 +1,13 @@
 import React, { useContext, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Store_Context } from "../../Context/Context";
+import { StoreContext } from "../../Context/Context";
 
 const Cart = () => {
   const navigate = useNavigate();
   
   
   const inputRef = useRef(null);
-  const { handleInc, handleDec, carts, totalBill } = useContext(Store_Context);
+  const { handleInc, handleDec, carts, totalBill } = useContext(StoreContext);
 
   
 

@@ -3,11 +3,11 @@ import Products from "../../components/Products/Products";
 import Categories from "../../components/Categories/Categories";
 import Loading from "../../components/Loaders/Loading";
 import Hero from "../../components/Hero/Hero";
-import { Store_Context } from "../../Context/Context";
+import { StoreContext } from "../../Context/Context";
 
 const ProductMod = () => {
   
-  const {products}= useContext(Store_Context);
+  const {products}= useContext(StoreContext);
 
   return (
     <div>

@@ -6,7 +6,7 @@ import axios from "axios";
 const Product = () => {
   const { id } = useParams();
   const navigate= useNavigate();
-  console.log(id, "id");
+  // console.log(id, "id");
 
   const [product, setProduct] = useState({});
 
@@ -18,7 +18,7 @@ const Product = () => {
 
   useEffect(() => {
     const fetchProduct = async () => {
-      const response = await axios.get(`http://localhost:5000/product/${id}`);
+      const response = await axios.get(`http://localhost:8000/product/${id}`);
       
       setProduct(response.data);
     };

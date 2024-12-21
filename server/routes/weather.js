@@ -6,3 +6,4 @@ router.post('/',postWeather)
 router.get('/',getWeather)
 
 export default router
+

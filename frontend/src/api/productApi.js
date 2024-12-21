@@ -1,33 +1,48 @@
-import axios from 'axios'
+import axios from 'axios';
 
-const url= "http://localhost:5000"
+const url = "http://localhost:8000";
 
-export const postProduct= async (formData)=>{
-  try{
-     await axios.post(`${url}/product`,formData)
-    
-  }catch(error){
-    console.error(error)
-  }
-}
-
-export const getProducts = async () => {
+// Function to post a new product
+export const postProduct = async (formData) => {
   try {
-    const response = await axios.get(`${url}/product`);
-    return response.data;
+    const response = await axios.post(`${url}/product`, formData);
+    if (response.status === 201) {
+      console.log('Product added successfully');
+    } else {
+      console.error('Failed to add product:', response.statusText);
+    }
   } catch (error) {
-    console.error(error);
-    throw new Error("Failed to fetch products");
+    console.error('Error posting product:', error.response?.data || error.message);
+    throw new Error('Failed to add product');
   }
 };
 
-export const getProductById= async (id)=>{
-  try{
-    const item =await axios.get(url+'/product/'+id);
-    console.log(item)
-    return item.data;
-  }catch(e){
-    console.log(e)
+// Function to get all products
+export const getProducts = async () => {
+  try {
+    const response = await axios.get(`${url}/product`);
+    if (response.status === 200) {
+      return response.data; // Return the product list
+    } else {
+      throw new Error('Failed to fetch products');
+    }
+  } catch (error) {
+    console.error('Error fetching products:', error.response?.data || error.message);
+    throw new Error('Failed to fetch products');
   }
-  
-}
+};
+
+// Function to get a product by its ID
+export const getProductById = async (id) => {
+  try {
+    const response = await axios.get(`${url}/product/${id}`);
+    if (response.status === 200) {
+      return response.data; // Return the product details
+    } else {
+      throw new Error('Failed to fetch product');
+    }
+  } catch (error) {
+    console.error('Error fetching product by ID:', error.response?.data || error.message);
+    throw new Error('Failed to fetch product');
+  }
+};

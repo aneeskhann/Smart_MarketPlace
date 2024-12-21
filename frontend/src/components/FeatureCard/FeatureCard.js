@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-const FeatureCard = ({ cards = [1, 2, 3] }) => {
+const FeatureCard = ({ cards = [1,2,3] }) => {
 
   const[filterCategories, setFilterCategories]= useState()
 
@@ -9,7 +9,7 @@ const FeatureCard = ({ cards = [1, 2, 3] }) => {
     const filter= cards.filter((card) => card !== 'electronics')
     setFilterCategories(filter)
   },[])
-  
+
   return (
     <section className="text-gray-600 body-font">
       <div className="container px-5 py-15 mx-auto">
@@ -71,5 +71,7 @@ const FeatureCard = ({ cards = [1, 2, 3] }) => {
     </section>
   );
 };
+
+
 
 export default FeatureCard;

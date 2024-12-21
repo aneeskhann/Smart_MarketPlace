@@ -4,7 +4,9 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from 'dotenv'
 
-dotenv.config()
+dotenv.config({ path: "./server/.env" });
+
+const secret_token= "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9M0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9"
 
 const signup = async (req, res) => {
   try {
@@ -35,26 +37,34 @@ const signup = async (req, res) => {
 
 const login = async (req, res) => {
   const { username, password } = req.body;
-
-  try {
+  console.log("Received credentials:", { username, password }); 
+  
+  try { 
     const user = await User.findOne({ username });
 
     if (!user) {
-      return res.status(401).json({ valid: false, message: "Invalid credentials" });
+      return res.status(401).json({ valid: false, message: "Invalid credentials entered" });
     }
 
-    const passwordMatch = bcrypt.compare(password, user.password);
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
     if (!passwordMatch) {
       return res.status(401).json({ valid: false, message: "error" });
     }
 
-    const access_Token = jwt.sign({ ...user._doc }, process.env.ACCESS_TOKEN_SECRET);
+    const access_Token = jwt.sign({ ...user._doc },secret_token);
     res.status(200).json({...user._doc, access_Token: access_Token} );
-    
+    console.log("Credentials matched.Login Successful")
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ valid: false, message: "Login failed" });
   }
+};
+
+// // JWT-based logout function
+const logout = (req, res) => {
+  // Invalidate the token by clearing it from the client side
+  res.status(200).json({ message: "Logged out successfully" });
 };
 
 
@@ -113,5 +123,43 @@ const updateUser = async (req, res) => {
   }
 };
 
+const addUser = async (req, res) => {
+  const { username, email, password, role } = req.body;
 
-export { signup, login, getUsers, deleteUser, updateUser };
+  try {
+    // Check if the user already exists (by email or username)
+    const existingUser = await User.findOne({ $or: [{ username }, { email },{role}] });
+    if (existingUser) {
+      return res.status(400).json({ message: 'User already exists' });
+    }
+
+    // Hash the password before saving to the database
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create a new user instance
+    const newUser = new User({
+      username,
+      email,
+      password: hashedPassword,
+      role,
+    });
+
+  
+    await newUser.save();
+
+    // Optionally, generate a JWT token (if you want to send it after user creation)
+    const token = jwt.sign({ userId: newUser._id }, 'your-secret-key', { expiresIn: '1h' });
+
+    // Send the response with user data and token (if applicable)
+    res.status(201).json({ message: 'User added successfully', user: newUser, token });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Failed to add user' });
+  }
+};
+
+
+
+
+export { signup, login,logout, getUsers, deleteUser, updateUser, addUser };
+

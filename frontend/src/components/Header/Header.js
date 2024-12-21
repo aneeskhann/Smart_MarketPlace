@@ -1,13 +1,16 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import logo from "../../Assets/logo.jpg";
-import { Badge } from "@material-ui/core";
-import { Store_Context } from "../../Context/Context";
+import { Badge } from '@mui/material';    // New
+import { StoreContext } from "../../Context/Context";
+
+
 
 const Header = () => {
   // const { isDarkMode, toggleTheme } = useContext(ThemeContext);
 
-  const { carts } = useContext(Store_Context);
+
+  const { carts } = useContext(StoreContext);
 
   // const handleThemeToggle = () => {
   //   toggleTheme();
@@ -34,21 +37,23 @@ const Header = () => {
       name: "Sell-Item",
       path: "/add",
     },
+    {
+      name: "Profile",
+      path: "/profile",
+    }
   ];
 
   return (
     <header className="text-black-600 body-font shadow-lg bg-white ">
-      <div className="bg-red-600 text-end text-white p-1 text-sm">
-        <marquee
-          behavior="scroll"
-          direction="left"
-          scrollamount="6"
-          className="font-sans"
-        >
-          All online operators are currently affected due to which there might
-          be a delay in your delivery
-        </marquee>
-      </div>
+      <div className="bg-red-600 text-end text-white p-1 text-sm overflow-hidden relative">
+  <div
+    className="whitespace-nowrap animate-scroll font-sans"
+    style={{ animation: "scrollText 10s linear infinite" }}
+  >
+    All online operators are currently affected due to which there might be a delay in your delivery
+  </div>
+</div>
+
 
       <div className="container mx-auto flex flex-wrap p-2 flex-col md:flex-row items-center">
       <div className="flex items-center justify-center">
@@ -62,8 +67,8 @@ const Header = () => {
         to="/"
         className="flex cursor-pointer title-font font-medium items-center mb-4 md:mb-0"
       >
-        <span className="font-roboto text-3xl text-red-800 tracking-wide">
-          WishAttire
+        <span className="font-roboto text-2xl text-red-800 tracking-wide">
+          Smart Marketplace
         </span>
       </Link>
     </div>
@@ -76,6 +81,7 @@ const Header = () => {
           key={navigation.name}
         >
           {navigation.name}
+          
         </Link>
       ))}
     </nav>
@@ -85,15 +91,19 @@ const Header = () => {
         >
           {isDarkMode ? "Light Mode" : "Dark Mode"}
         </button> */}
+      
         <div className="pr-3">
           <Link
-            to="/adminpanel"
+            to="/AdminPanel"
             className="inline-flex items-center text-red-500 border-2 border-red-500 py-1 px-3 focus:outline-none hover:bg-red-500 hover:text-white rounded-full text-base mt-4 md:mt-0 mr-2 transition duration-300"
           >
             Admin
           </Link>
         </div>
-        <div>
+
+
+
+         <div>
           <Link
             to="./signin"
             className="inline-flex items-center text-red-500 border-2 border-red-500 py-1 px-3 focus:outline-none hover:bg-red-500 hover:text-white rounded-full text-base mt-4 md:mt-0 mr-2 transition duration-300"
@@ -101,7 +111,8 @@ const Header = () => {
             Sign in
           </Link>
         </div>
-        <div className="pr-5">
+  
+          <div className="pr-5">
           <Badge
             badgeContent={carts.length}
             color="secondary"

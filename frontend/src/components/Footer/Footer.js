@@ -7,7 +7,7 @@ const Footer = () => {
         <div className="w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left">
           <a className="flex title-font font-medium items-center md:justify-start justify-center text-gray-900">
             
-            <span className="ml-3 text-xl">WishAttire</span>
+            <span className="ml-3 text-x1">Smart MarketPlace</span>
           </a>
           <p className="mt-2 text-sm text-gray-500">
             Shop now for your necessary essentials online.
@@ -43,13 +43,13 @@ const Footer = () => {
                 <a className="text-gray-600 hover:text-gray-800 cursor-pointer">Contact</a>
               </li>
               <li>
-                <a className="text-gray-600 hover:text-gray-800 cursor-pointer">Email: Faizankh95@outlook.com</a>
+                <a className="text-gray-600 hover:text-gray-800 cursor-pointer">Email: aneeskhann666@gmail.com</a>
               </li>
               <li>
-                <a className="text-gray-600 hover:text-gray-800 cursor-pointer">Phone: 000-000-000</a>
+                <a className="text-gray-600 hover:text-gray-800 cursor-pointer">Phone: 03468883034</a>
               </li>
               <li>
-                <a className="text-gray-600 hover:text-gray-800 cursor-pointer">Instagram: F4izi_kn</a>
+                <a className="text-gray-600 hover:text-gray-800 cursor-pointer">Instagram: aneeskahn</a>
               </li>
             </nav>
           </div>
@@ -58,14 +58,14 @@ const Footer = () => {
       <div className="bg-red-500">
         <div className="container mx-auto py-4 px-5 flex flex-wrap flex-col sm:flex-row">
           <p className="text-white text-sm sm:text-left ">
-            © 2020 WishAttire —
+            © 2023 SmartMarketPlace —
             <a
               href="https://twitter.com/knyttneve"
               rel="noopener noreferrer"
               className="text-white ml-1"
               target="_blank"
             >
-              @F4izi_kn
+              @AneesKhann
             </a>
           </p>
           <span className="inline-flex sm:ml-auto sm:mt-0 mt-2 justify-center sm:justify-start">

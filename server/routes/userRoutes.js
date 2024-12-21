@@ -1,5 +1,5 @@
 import express from 'express'
-import { login, signup, getUsers, deleteUser, updateUser } from '../controllers/userController.js';
+import { login, signup, getUsers, deleteUser,logout, updateUser } from '../controllers/userController.js';
 import { authenticateToken } from './authentication/Authentication.js';
 
 const router = express.Router();
@@ -10,6 +10,7 @@ const router = express.Router();
 router.post('/signup', signup);
 
 router.post('/login', login);
+router.post('/logout', logout);
 
 router.get('/user', authenticateToken, getUsers)
 

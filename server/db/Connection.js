@@ -1,11 +1,27 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 import dotenv from 'dotenv'
 
-dotenv.config()
+dotenv.config({
+  path: './.env'
+});
 
-const apiKey = process.env.MONGODB_CONNECTION_STRING;
+// console.log(process.env.MONGODB_URL); // Should print the MongoDB URL from .env
 
-const connection= mongoose.connect(apiKey, {useUnifiedTopology: true, useNewUrlParser: true})
+const apiKey = "mongodb+srv://anees:anees7342@atlascluster.cq5fc6p.mongodb.net/";
+
+const connection = async () => {
+  try {
+    await mongoose.connect(apiKey , {
+      dbName: "SMART"
+    });
+    console.log("Connected on PORT:", process.env.PORT);
+  } catch (error) {
+    console.error('MongoDB connection failed:', error.message);
+  }
+};
+
+// Call the testConnection function to initiate the connection
+connection();
+export { connection };
 
 
-export {connection}

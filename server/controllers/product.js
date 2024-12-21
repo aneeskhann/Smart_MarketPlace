@@ -1,6 +1,6 @@
 import productsModel from "../model/productModel.js";
 
-// Controller function for creating a new product
+
 const createProduct = async (req, res) => {
   try {
     const { title, price, description, category, rating } = req.body;
@@ -29,19 +29,22 @@ const createProduct = async (req, res) => {
 
 const getProducts = async (req, res) => {
   try {
+    const products = await productsModel.find(); // Fetch all products
 
-    const products = await productsModel.find().exec();
     const items = products.map((product) => ({
       ...product._doc,
-      image: "http://localhost:5000/" + product.image,
+      image: "http://localhost:8000/" + product.image, // Update image path
     }));
-    console.log("get all products")
-    res.status(200).json(items);
+
+    console.log("Fetching all products");
+    res.status(200).json(items); // Send products as JSON response
   } catch (error) {
-    console.error(error);
+    console.error("Error fetching products:", error);
     res.status(500).json({ error: "Failed to fetch products" });
   }
 };
+
+
 
 const getProductById = async (req, res) => {
   try {

@@ -4,7 +4,6 @@ import { updateUser } from "../../../api/userApi";
 const ModifyUser = ({ users,getUsers }) => {
   const [formData, setFormData] = useState({});
 
-
   const handleChange = (e, userId) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
@@ -13,14 +12,17 @@ const ModifyUser = ({ users,getUsers }) => {
     }));
   };
 
+
   const handleUpdateUser = async (userId, formData) => {
     try {
       await updateUser(userId, formData);
       getUsers()
+      alert("user updated successfully")
     } catch (error) {
       console.error("Error updating user:", error);
     }
   };
+
 
   return (
     <div>
@@ -46,6 +48,7 @@ const ModifyUser = ({ users,getUsers }) => {
                   />
                 </td>
                 {/* Email column */}
+               
                 <td className="px-6 py-4 whitespace-nowrap">
                   <input
                     type="text"
@@ -69,7 +72,7 @@ const ModifyUser = ({ users,getUsers }) => {
                     <option value="client">Client</option>
                   </select>
                 </td>
-                {/* Update button column */}
+                Update button column
                 <td className="py-2 px-4 border-b">
                   <button
                     onClick={() => handleUpdateUser(user._id, userFormData)}

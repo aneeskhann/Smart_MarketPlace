@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 
 const weatherSchema= mongoose.Schema({
-  temprature:String,
+  temperature:String,
   humidity:String
 })
 

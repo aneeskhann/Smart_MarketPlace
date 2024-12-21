@@ -4,10 +4,10 @@ import StatsCard from "../../components/StatsCard/StatsCard";
 import Categories from "../../components/Categories/Categories";
 import { Spinner } from "react-bootstrap";
 import Slider from "../../components/Carousel/Slider";
-import { Store_Context } from "../../Context/Context";
+import { StoreContext } from "../../Context/Context";
 
 const Home = () => {
-  const {products}= useContext(Store_Context);
+  const {products}= useContext(StoreContext);
 
   return (
     <div>

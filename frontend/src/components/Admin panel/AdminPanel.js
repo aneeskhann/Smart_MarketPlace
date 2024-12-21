@@ -1,31 +1,32 @@
 import React, { useContext, useEffect, useState } from "react";
-import { deleteUser, fetchUsers, updateUser } from "../../api/userApi";
+import { fetchUsers} from "../../api/userApi";
 import ViewUsers from "./components/ViewUser";
 import AddUser from "./components/AddUser";
 import ModifyUser from "./components/ModifyUser";
 import DeleteUser from "./components/DeleteUser";
-import { Store_Context } from "../../Context/Context";
+import { StoreContext } from "../../Context/Context";
+import { useCallback } from "react";
+
 
 const AdminPanel = () => {
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState('view')
-  const {currentUser} = useContext(Store_Context)
+  const {currentUser} = useContext(StoreContext)
 
-  const getUsers = async () => {
+
+  const getUsers = useCallback(async () => {
     try {
-      const data = await fetchUsers(currentUser.access_Token)
+      const data = await fetchUsers(currentUser.access_Token);
       setUsers(data);
     } catch (error) {
       console.error("Failed to fetch users:", error);
     }
-  };
+  }, [currentUser.access_Token]);
+  
 
   useEffect(() => {
-   
-   
     getUsers();
-  }, [currentPage]);
-
+  }, [currentPage, getUsers]);
   
 
   const renderPage = () => {
@@ -69,8 +70,6 @@ const AdminPanel = () => {
       </div>
       )
     }
-
- 
 };
 
 const Navbar = ({ setCurrentPage }) => {

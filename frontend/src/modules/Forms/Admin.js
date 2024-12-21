@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, } from "react";
 import { postProduct } from "../../api/productApi";
+import { useNavigate } from 'react-router-dom';
 
 const PostProductForm = () => {
+  const navigate=useNavigate();
   const [productData, setProductData] = useState({
     title: "",
     price: 0,
@@ -34,6 +36,8 @@ const PostProductForm = () => {
     formData.append("image", productData.image);
     formData.append("rating[rate]", productData.rating.rate);
     formData.append("rating[count]", productData.rating.count);
+alert("Product added Succesfully");
+navigate('/');
 
     await postProduct (formData);
   }
@@ -114,8 +118,9 @@ const PostProductForm = () => {
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="submit"
           >
-            Post Product
+            Add Product
           </button>
+       
         </div>
       </form>
     </div>

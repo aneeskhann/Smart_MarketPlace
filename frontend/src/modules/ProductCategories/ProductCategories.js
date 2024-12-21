@@ -20,14 +20,14 @@ const ProductCategories = () => {
     fetchProducts();
   }, []);
 
-  if(products.length === 0 ) return <div><Loading/></div>
+  if(products.length === 0) return <div><Loading/></div>
   return (
     <div>
     <Products products={products}/>
-    
-    
     </div>
   )
 }
 
 export default ProductCategories
+
+
