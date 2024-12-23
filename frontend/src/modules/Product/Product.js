@@ -23,7 +23,7 @@ const Product = () => {
       setProduct(response.data);
     };
     fetchProduct();
-  }, []);
+  }, [id]);
 
   const handleCart = (product, redirect) => {
     console.log(product);

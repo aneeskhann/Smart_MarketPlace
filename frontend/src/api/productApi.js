@@ -15,12 +15,12 @@ export const postProduct = async (formData) => {
     console.error('Error posting product:', error.response?.data || error.message);
     throw new Error('Failed to add product');
   }
-};
+};  
 
 // Function to get all products
 export const getProducts = async () => {
   try {
-    const response = await axios.get(`${url}/product`);
+    const response = await axios.get(`https://fakestoreapi.com/products`);
     if (response.status === 200) {
       return response.data; // Return the product list
     } else {

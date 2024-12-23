@@ -18,11 +18,11 @@ const ProductMod = () => {
         products.length > 0 ?
         <Products products={products}/>
         :
-        <div><Loading/></div>
+        <div><Loading/></div
+        >
       }
       
     </div>
-  );
+  )
 };
-
 export default ProductMod;

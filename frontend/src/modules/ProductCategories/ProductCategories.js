@@ -11,14 +11,14 @@ const ProductCategories = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       const response = await fetch(
-        `https://fakestoreapi.com/products/category/${name}`
+        `https://fakestoreapi.com/product/category/${name}`
       );
       const data = await response.json();
       console.log(data);
       setProducts(data);
     };
     fetchProducts();
-  }, []);
+  }, [name]);
 
   if(products.length === 0) return <div><Loading/></div>
   return (
