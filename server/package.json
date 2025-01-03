@@ -11,7 +11,7 @@
   "author": "anees",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^3.1.7"
+    "nodemon": "^3.1.9"
   },
   "dependencies": {
     "axios": "^1.4.0",

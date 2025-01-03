@@ -14,8 +14,7 @@ const FeatureCard = ({ cards = [1,2,3] }) => {
     <section className="text-gray-600 body-font">
       <div className="container px-5 py-15 mx-auto">
       <h1 class="sm:text-3xl text-2xl font-medium title-font text-gray-900 text-center mb-10 mt-10 ">
-         
-          Categories
+                   Categories
           
           <br />
         </h1>

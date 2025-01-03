@@ -19,20 +19,34 @@ const Signup = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+  
+    // Validate passwords match
     if (password !== confirmPassword) {
       setErrorMessage("Passwords do not match!");
       return;
     }
     setErrorMessage(""); // Clear any previous error messages
-
+  
     try {
+    
+
+      // Log the request payload for debugging purposes
+      console.log("Request payload:", {
+        username,
+        email,
+        password,
+        role,
+      });
+  
+      // Make the API request to signup
       const response = await axios.post("http://localhost:8000/api/signup", {
         username,
         email,
         password,
         role,
       });
-
+  
+      // Check if the registration was successful
       if (response.data.message === "User registered successfully") {
         alert("User registered successfully.");
         setEmail("");
@@ -48,10 +62,12 @@ const Signup = () => {
         }
       }
     } catch (error) {
-      console.error("Registration error:", error);
+      // Handle Axios error more effectively
+      console.error("Registration error:", error.response?.data || error.message);
       setErrorMessage("Something went wrong. Please try again later.");
     }
   };
+  
 
   return (
     <section

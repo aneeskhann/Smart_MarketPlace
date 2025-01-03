@@ -1,6 +1,6 @@
 import React from "react";
 
-const ViewUsers = ({ users, handleRemoveUser }) => {
+const ViewUsers = ({ users }) => {
   return (
     <div>
       <h2 className="text-2xl font-bold mb-4 text-center">Registered Users</h2>

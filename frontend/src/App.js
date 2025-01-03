@@ -12,10 +12,11 @@ import { StoreProvider } from './Context/Context';
 import Contact from './components/Contact/Contact';
 import Signin from './modules/Forms/Signin';
 import Signup from './modules/Forms/Signup';
-import PostProductForm from './modules/Forms/Admin';
+import PostProductForm from './modules/Forms/PostProductForm';
 import FAQS from './components/FAQS/FAQS';
 import AdminPanel from './components/Admin panel/AdminPanel';
 import Profile from "../src/components/Profile/profile"
+import ProductCard from "../src/modules/Product/Product.js"
 
 
 //comment
@@ -28,6 +29,7 @@ function App() {
         <Route path='/' element= {<Home/>}/>
         <Route path="/" element= {<Product/>}/>
         <Route path='/products' element={<ProductMod/>}/>
+        <Route path='/products/:id' element={<ProductCard/>}/>
         <Route path='/categories/:name' element={<ProductCategories/>}/>
         <Route path='/cart' element={<Cart/>}/>
         <Route path='/about' element={<About/>}/>
@@ -38,7 +40,7 @@ function App() {
         <Route path='/add' element={<PostProductForm/>}/>
         <Route path='/adminPanel' element={<AdminPanel/>}/>
         <Route path= '/faqs' element= {<FAQS/>}/>
-        <Route path= '*' element = {<div>404</div>}/>
+        <Route path= '*' element = {<div>404 no page</div>}/>
       </Routes>
       <Footer/>
       </StoreProvider>

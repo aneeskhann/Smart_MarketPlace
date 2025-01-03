@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import anees from "../../Assets/anees.jpg";
+import aneess from "../../Assets/aneess.jpg";
+import yaman from "../../Assets/yaman.jpg";
+import uzair from "../../Assets/uzair.jpg";
 import Content from "./Content";
 
 const About = () => {
@@ -15,12 +17,12 @@ const About = () => {
                 <img
                   alt="testimonial"
                   className="w-20 h-20 mb-8 object-cover object-center rounded-full inline-block border-2 border-gray-200 bg-gray-100"
-                  src={anees}
+                  src={aneess}
                 />
                 <p className="leading-relaxed">
                   Building interactive and responsive user interfaces.
                   Continuously learning and staying updated with the latest
-                  trends and best practices in React development, Faizan is
+                  trends and best practices in React development, Anees is
                   eager to contribute to projects and deliver high-quality
                   React-based solutions.
                 </p>
@@ -38,18 +40,20 @@ const About = () => {
                 <img
                   alt="testimonial"
                   className="w-20 h-20 mb-8 object-cover object-center rounded-full inline-block border-2 border-gray-200 bg-gray-100"
-                  src="https://dummyimage.com/305x305"
+                  src={yaman}
                 />
                 <p className="leading-relaxed">
-                  Building logics and bringing the website to life. yaman is a
-                  Backend Developer with a strong urge to learn more about
-                  building projects on React.
+                Building interactive and responsive user interfaces.
+                  Continuously learning and staying updated with the latest
+                  trends and best practices in React development, Yaman is
+                  eager to contribute to projects and deliver high-quality
+                  React-based solutions.
                 </p>
                 <span className="inline-block h-1 w-10 rounded bg-red-500 mt-6 mb-4"></span>
                 <h2 className="text-gray-900 font-medium title-font tracking-wider text-sm">
                   Yaman Husain
                 </h2>
-                <p className="text-gray-500">Backend Developer</p>
+                <p className="text-gray-500">Frontend Developer</p>
               </div>
             </div>
 
@@ -59,7 +63,7 @@ const About = () => {
                 <img
                   alt="testimonial"
                   className="w-20 h-20 mb-8 object-cover object-center rounded-full inline-block border-2 border-gray-200 bg-gray-100"
-                  src="https://dummyimage.com/306x306"
+                  src={uzair}
                 />
                 <p className="leading-relaxed">
                   Passionate about designing seamless user experiences. uzair

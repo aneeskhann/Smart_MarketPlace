@@ -10,6 +10,7 @@ const secret_token= "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9M0NTY3ODkwIiwibmFtZSI6I
 
 const signup = async (req, res) => {
   try {
+    db.users.deleteMany({ userNumber: null });
     const {username, email, password, role} = req.body;
 
     // Check if the user already exists

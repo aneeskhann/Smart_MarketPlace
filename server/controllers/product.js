@@ -33,7 +33,7 @@ const getProducts = async (req, res) => {
 
     const items = products.map((product) => ({
       ...product._doc,
-      image: "http://localhost:8000/" + product.image, // Update image path
+      image: "http://localhost:8000/" + product.image, 
     }));
 
     console.log("Fetching all products");

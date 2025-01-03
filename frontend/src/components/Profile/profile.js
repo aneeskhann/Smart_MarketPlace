@@ -9,7 +9,7 @@ const Profile = () => {
   const logout = () => {
     // Clear the user's session/token
     localStorage.removeItem("access_Token"); // If you store the token in localStorage
-    setCurrentUser(null); // Clear user context
+    setCurrentUser(null)// Clear user context
     navigate("/login"); // Redirect to the login page
   };
 
