@@ -15,7 +15,6 @@ import Signup from './modules/Forms/Signup';
 import PostProductForm from './modules/Forms/PostProductForm';
 import FAQS from './components/FAQS/FAQS';
 import AdminPanel from './components/Admin panel/AdminPanel';
-import Profile from "../src/components/Profile/profile"
 import ProductCard from "../src/modules/Product/Product.js"
 
 
@@ -35,7 +34,6 @@ function App() {
         <Route path='/about' element={<About/>}/>
         <Route path='/contact' element={<Contact/>}/>
         <Route path='/signin' element={<Signin/>}/>
-        <Route path='/profile' element={<Profile/>}/>
         <Route path='/signup' element={<Signup/>}/>
         <Route path='/add' element={<PostProductForm/>}/>
         <Route path='/adminPanel' element={<AdminPanel/>}/>

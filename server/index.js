@@ -16,6 +16,14 @@ dotenv.config({
 
 const app = express()
 
+
+app.get("/protected", authMiddleware, (req, res) => {
+  res.json({ message: "You have access to this protected route!" });
+});
+
+app.listen(5000, ()=>console.log("Server running on port 5000"))
+
+
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json())
@@ -46,6 +54,3 @@ app.get('/',(req,res)=>{
   res.json({message:"Welcome to server"})
 })
 
-app.get('/api/userRoutes/login',(re1,res)=>{
-  res.json({data})
-})
