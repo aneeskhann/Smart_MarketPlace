@@ -32,86 +32,56 @@ const Header = () => {
         </div>
       </div>
 
-      <div className="container mx-auto flex flex-wrap p-2 flex-col md:flex-row items-center">
+      <div className="container mx-auto flex flex-wrap p-3 flex-col md:flex-row items-center">
         {/* Logo */}
-        <div className="flex items-center justify-center">
-          <img
-            src={logo}
-            alt="logo"
-            className="md:cursor-pointer h-10 ml-2 bg-white"
-          />
-
-          <Link
-            to="/"
-            className="flex cursor-pointer title-font font-medium items-center mb-4 md:mb-0"
-          >
-            <span className="font-roboto text-2xl text-red-800 tracking-wide">
-              Smart Marketplace
-            </span>
-          </Link>
-        </div>
+        <Link to="/" className="flex items-center">
+          <img src={logo} alt="Smart Marketplace Logo" className="h-10 w-auto" />
+          <span className="font-roboto text-2xl text-red-800 ml-2 tracking-wide">Smart Marketplace</span>
+        </Link>
 
         {/* Navigation */}
-        <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center justify-center text-base cursor-pointer">
+        <nav className="md:ml-auto flex flex-wrap items-center justify-center space-x-4 text-sm font-medium">
           {navigations.map((navigation) => (
-           <Link
-           to={navigation.path}
-           key={navigation.name}
-           className="mr-5 text-sm font-sans text-red-600 capitalize 
-                      border border-white rounded-lg p-2 transition-all 
-                      duration-300 ease-in-out hover:text-white 
-                      hover:bg-red-400 hover:-translate-y-1 hover:shadow-lg"
-         >
-           {navigation.name}
-         </Link>
-         
+            <Link
+              key={navigation.name}
+              to={navigation.path}
+              className="px-3 py-2 rounded-lg text-red-600 transition-all duration-300 
+                         hover:bg-red-500 hover:text-white"
+            >
+              {navigation.name}
+            </Link>
           ))}
         </nav>
 
-      
-        <div>
-  
-  
-     <Link
-       to="/signin"
-       className="inline-flex items-center py-1.5 px-4 focus:outline-none 
-                bg-gradient-to-r from-blue-500 to-blue-600 text-white 
-                font-medium rounded-full text-sm mt-4 md:mt-0 mr-2 
-                shadow-md hover:shadow-lg transform transition duration-300 
-                hover:scale-105 hover:from-red-600 hover:to-red-800"
-     >
-       <span>Sign In</span>
-     </Link>
-   
- </div>
-
-
-
-        {/* Cart Icon */}
-        <div className="pr-5">
-          <Badge
-            badgeContent={carts.length}
-            color="secondary"
-            overlap="rectangular"
+        {/* Right Side: Sign In & Cart */}
+        <div className="flex items-center space-x-4">
+          {/* Sign In Button */}
+          <Link
+            to="/signin"
+            className="px-4 py-2 bg-gradient-to-r from-red-600 to-red-800 text-white 
+                      rounded-full text-sm font-medium shadow-md transition-transform 
+                      duration-300 hover:scale-105 hover:from-blue-500 hover:to-blue-600"
           >
-            <Link to={"/cart"}>
-            <svg
-  className="mr-2 ml-5 fill-current text-blue-500 
-             hover:text-red-500 hover:drop-shadow-lg 
-             transition-all duration-300 hover:scale-110 hover:from-red-600 hover:to-red-700"
-  xmlns="http://www.w3.org/2000/svg"
-  height="25px"
-  viewBox="0 0 576 512"
->
-  <path d="M528.12 301.319l47.273-208C579.973 84.503 565.906 64 545.374 64H144l-9.553-47.276C131.498 7.64 121.938 0 111.042 0H24C10.745 0 0 10.745 0 24s10.745 24 24 24h65.411l61.495 304.31C160.159 366.27 180.313 384 204.032 384h271.936c23.719 0 43.873-17.73 48.125-39.69L544 112H151.07l9.554 47.276c2.405 11.929 13.015 20.724 25.167 20.724h324.207c11.884 0 22.066-7.755 24.124-18.318l24-112c2.304-10.754-5.847-20.682-16.828-20.682H144L134.553 16.724C131.498 7.64 121.938 0 111.042 0H24C10.745 0 0 10.745 0 24s10.745 24 24 24h65.411l61.495 304.31C160.159 366.27 180.313 384 204.032 384h271.936c23.719 0 43.873-17.73 48.125-39.69L544 112H151.07l9.554 47.276c2.405 11.929 13.015 20.724 25.167 20.724h324.207c11.884 0 22.066-7.755 24.124-18.318l24-112c2.304-10.754-5.847-20.682-16.828-20.682H144L134.553 16.724C131.498 7.64 121.938 0 111.042 0H24C10.745 0 0 10.745 0 24s10.745 24 24 24h65.411l61.495 304.31C160.159 366.27 180.313 384 204.032 384h271.936c23.719 0 43.873-17.73 48.125-39.69zM200 464c26.51 0 48-21.49 48-48s-21.49-48-48-48-48 21.49-48 48 21.49 48 48 48zm272-48c0 26.51-21.49 48-48 48s-48-21.49-48-48 21.49-48 48-48 48 21.49 48 48z" />
-</svg>
-     
-            </Link>
-          </Badge>
+            Sign In
+          </Link>
+
+          {/* Cart Icon with Badge */}
+          <Link to="/cart" className="relative">
+            <Badge badgeContent={carts.length} color="secondary">
+              <svg
+                className="w-6 h-6 text-blue-500 transition-transform duration-300 
+                           hover:text-red-500 hover:scale-110"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 576 512"
+              >
+                <path d="M528.12 301.319l47.273-208C579.973 84.503 565.906 64 545.374 64H144l-9.553-47.276C131.498 7.64 121.938 0 111.042 0H24C10.745 0 0 10.745 0 24s10.745 24 24 24h65.411l61.495 304.31C160.159 366.27 180.313 384 204.032 384h271.936c23.719 0 43.873-17.73 48.125-39.69L544 112H151.07l9.554 47.276c2.405 11.929 13.015 20.724 25.167 20.724h324.207c11.884 0 22.066-7.755 24.124-18.318l24-112c2.304-10.754-5.847-20.682-16.828-20.682H144L134.553 16.724C131.498 7.64 121.938 0 111.042 0H24C10.745 0 0 10.745 0 24s10.745 24 24 24h65.411l61.495 304.31C160.159 366.27 180.313 384 204.032 384h271.936c23.719 0 43.873-17.73 48.125-39.69zM200 464c26.51 0 48-21.49 48-48s-21.49-48-48-48-48 21.49-48 48 21.49 48 48 48zm272-48c0 26.51-21.49 48-48 48s-48-21.49-48-48 21.49-48 48-48 48 21.49 48 48z" />
+              </svg>
+            </Badge>
+          </Link>
+
+          {/* User Profile */}
+          <UserButton />
         </div>
-<div> <UserButton /></div>
-         
-       
       </div>
     </header>
   );

@@ -17,10 +17,7 @@ const Content = () => {
           Welcome to our website! We are Anees, Yaman and Uzair, a dynamic trio of intermediate web developers specializing in the MERN stack. With a passion for building innovative and user-friendly web applications, we strive to create engaging digital experiences for businesses and individuals alike and integrating the Image validation feature for products validations and user inhancements.
           </p>
           <span class="inline-block h-1 w-10 rounded bg-indigo-500 mt-8 mb-6"></span>
-          <h2 class="text-gray-900 font-medium title-font tracking-wider text-sm">
-            Anees
-          </h2>
-          <p class="text-gray-500">Product Designer</p>
+         
         </div>
       </div>
     </section>
