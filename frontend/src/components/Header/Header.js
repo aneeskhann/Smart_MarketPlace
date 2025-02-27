@@ -15,8 +15,7 @@ const Header = () => {
     { name: "Products", path: "/products" },
     { name: "About", path: "/about" },
     { name: "Contact", path: "/contact" },
-    { name: "Sell-Item", path: "/add" },
-    { name: "Profile", path: "/profile" },
+    { name: "Sell-Item", path: "/add" }
   ];
 
   return (
@@ -40,27 +39,28 @@ const Header = () => {
         </Link>
 
         {/* Navigation */}
-        <nav className="md:ml-auto flex flex-wrap items-center justify-center space-x-4 text-sm font-medium">
-          {navigations.map((navigation) => (
-            <Link
-              key={navigation.name}
-              to={navigation.path}
-              className="px-3 py-2 rounded-lg text-red-600 transition-all duration-300 
-                         hover:bg-red-500 hover:text-white"
-            >
-              {navigation.name}
-            </Link>
-          ))}
-        </nav>
+        <nav className="md:ml-auto mr-56 flex flex-wrap items-center justify-center space-x-4 text-sm font-medium">
+  {navigations.map((navigation) => (
+    <Link
+      key={navigation.name}
+      to={navigation.path}
+      className="px-3 py-2 rounded-lg  text-red-600 transition-all duration-300 
+                 hover:bg-red-500 hover:text-white hover:-translate-y-1 
+                 hover:shadow-lg hover:scale-105"
+    >
+      {navigation.name}
+    </Link>
+  ))}
+</nav>
 
         {/* Right Side: Sign In & Cart */}
         <div className="flex items-center space-x-4">
           {/* Sign In Button */}
           <Link
             to="/signin"
-            className="px-4 py-2 bg-gradient-to-r from-red-600 to-red-800 text-white 
-                      rounded-full text-sm font-medium shadow-md transition-transform 
-                      duration-300 hover:scale-105 hover:from-blue-500 hover:to-blue-600"
+            className="px-3 py-2 bg-red-50 rounded-lg text-red-600 font-semibold transition-all duration-300 
+                 hover:bg-red-500 hover:text-white hover:-translate-y-1 
+                 hover:shadow-lg hover:scale-105"
           >
             Sign In
           </Link>

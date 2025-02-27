@@ -6,7 +6,8 @@ const imgConfig=multer.diskStorage({
 
 destination:(req,file,callBack)=>{
    console.log("I am i destination : ")
-   callBack(null,"./uploads/")
+   callBack(null, `image-${Date.now()}.${file.originalname}`);
+
    
 },
 

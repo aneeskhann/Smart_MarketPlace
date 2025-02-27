@@ -14,14 +14,13 @@ import Signin from './modules/Forms/Signin';
 import Signup from './modules/Forms/Signup';
 import PostProductForm from './modules/Forms/PostProductForm';
 import FAQS from './components/FAQS/FAQS';
-import AdminPanel from './components/Admin panel/AdminPanel';
 import ProductCard from "../src/modules/Product/Product.js"
 
 
 //comment
 function App() {
   return (
-    <div>
+    <div className="App">
       <StoreProvider>
       <Header/>
       <Routes>
@@ -36,7 +35,6 @@ function App() {
         <Route path='/signin' element={<Signin/>}/>
         <Route path='/signup' element={<Signup/>}/>
         <Route path='/add' element={<PostProductForm/>}/>
-        <Route path='/adminPanel' element={<AdminPanel/>}/>
         <Route path= '/faqs' element= {<FAQS/>}/>
         <Route path= '*' element = {<div>404 no page</div>}/>
       </Routes>

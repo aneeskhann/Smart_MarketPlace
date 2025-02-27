@@ -14,7 +14,7 @@ const connection = async () => {
     await mongoose.connect(apiKey , {
       dbName: "SMART"
     });
-    console.log("Connected on PORT:", process.env.PORT);
+    console.log("Connected on PORT:", process.env.PORT | 8000);
   } catch (error) {
     console.error('MongoDB connection failed:', error.message);
   }

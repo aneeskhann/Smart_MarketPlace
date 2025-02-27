@@ -11,7 +11,7 @@ const ProductCategories = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       const response = await fetch(
-        `https://fakestoreapi.com/product/category/${name}`
+        `https://fakestoreapi.com/products/category/$'{categoryName}`
       );
       const data = await response.json();
       console.log(data);
