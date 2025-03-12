@@ -10,8 +10,8 @@ import Cart from './modules/Cart/Cart';
 import About from './components/About/About';
 import { StoreProvider } from './Context/Context';
 import Contact from './components/Contact/Contact';
-import Signin from './modules/Forms/Signin';
-import Signup from './modules/Forms/Signup';
+import Signin from './modules/Forms/Signin.js';
+import Signup from './modules/Forms/Signup.js';
 import PostProductForm from './modules/Forms/PostProductForm';
 import FAQS from './components/FAQS/FAQS';
 import ProductCard from "../src/modules/Product/Product.js"

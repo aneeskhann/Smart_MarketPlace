@@ -24,7 +24,11 @@ const productSchema = new mongoose.Schema({
   rating: {
     rate: Number,
     count: Number
-  }
+  },
+  validationResult: {
+     type: String,
+     default: "Pending" 
+    }
 });
 
 const productsModel = mongoose.model("products", productSchema);

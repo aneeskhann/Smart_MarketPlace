@@ -54,7 +54,7 @@ const Header = () => {
 </nav>
 
         {/* Right Side: Sign In & Cart */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center  space-x-9">
           {/* Sign In Button */}
           <Link
             to="/signin"

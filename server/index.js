@@ -3,7 +3,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import { connection } from "./db/Connection.js";
 import product_router from "./routes/product_router.js";
-import validateProduct from "./routes/productValidation.js";
+import validateAndPostProduct from "./routes/geminiRoutes.js"; // Ensure correct import
 import morgan from "morgan";
 import dotenv from "dotenv";
 
@@ -23,16 +23,16 @@ connection()
   .then(() => console.log("MongoDB connected successfully."))
   .catch((err) => console.error("MongoDB connection failed:", err));
 
-// Routes
-app.use("/api/product", validateProduct);
-app.use("/product", product_router);
+// ✅ Fix Route Mounting
+app.use("/api/gemini", validateAndPostProduct); // Change this from "/api/product"
+app.use("/products", product_router);
 
-app.get("/", (req, res) => {
+app.get("/api/gemini", (req, res) => {
   res.json({ message: "Welcome to the server" });
 });
 
 // Start server
-const PORT = process.env.PORT || 8000; // Fixed bitwise OR issue
+const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
   console.log(`Server is running at port: ${PORT}`);
 });

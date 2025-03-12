@@ -6,7 +6,7 @@ const fakeStoreApiUrl = "https://fakestoreapi.com/products";
 // Function to post a new product to local server
 export const postProduct = async (formData) => {
   try {
-    const response = await axios.post(`${localApiUrl}/product`, formData, {
+    const response = await axios.post(`${localApiUrl}/api/product`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -29,7 +29,7 @@ export const postProduct = async (formData) => {
 export const getProducts = async () => {
   try {
     // Fetch from local database
-    const localResponse = await axios.get(`${localApiUrl}/product`);
+    const localResponse = await axios.get(`${localApiUrl}/products`);
     const localProducts = localResponse.status === 200 ? localResponse.data : [];
 
     // Fetch from FakeStore API

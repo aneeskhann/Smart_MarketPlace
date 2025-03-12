@@ -29,11 +29,11 @@ const createProduct = async (req, res) => {
 
 const getProducts = async (req, res) => {
   try {
-    const products = await productsModel.find(); // Fetch all products
+    const product = await productsModel.find(); // Fetch all products
 
-    const items = products.map((product) => ({
-      ...product._doc,
-      image: "http://localhost:8000/" + product.image, 
+    const items = product.map((product) => ({
+      ...product.toObject(), // Convert to plain JS object
+      image: `http://localhost:8000/${product.image}`, // Construct image URL
     }));
 
     console.log("Fetching all products");
@@ -43,6 +43,7 @@ const getProducts = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch products" });
   }
 };
+
 
 
 
