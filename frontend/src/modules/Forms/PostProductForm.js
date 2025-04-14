@@ -6,17 +6,16 @@ import { useDropzone } from "react-dropzone";
 const PostProductForm = () => {
   const navigate = useNavigate();
   const [productData, setProductData] = useState({
-    title: "", // Change "name" to "title"
+    title: "", 
     price: "",
     description: "",
     category: "",
     image: null,
   });
-  
 
-  
   const [validationMessage, setValidationMessage] = useState(""); // State to display validation response
   const [loading, setLoading] = useState(false); // State to show loading while API request is in progress
+  const [isUrdu, setIsUrdu] = useState(false); // Toggle state for language
 
   const handleChange = (e) => {
     setProductData({ ...productData, [e.target.name]: e.target.value });
@@ -32,8 +31,8 @@ const PostProductForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!productData.name || !productData.price || !productData.category || !productData.description || !productData.image) {
-      setValidationMessage("⚠️ Please fill in all fields and upload an image.");
+    if (!productData.title || !productData.price || !productData.category || !productData.description || !productData.image) {
+      setValidationMessage(isUrdu ? "⚠️ براہ کرم تمام فیلڈز مکمل کریں اور ایک تصویر اپ لوڈ کریں۔" : "⚠️ Please fill in all fields and upload an image.");
       return;
     }
 
@@ -41,28 +40,28 @@ const PostProductForm = () => {
     setValidationMessage(""); // Clear previous messages
 
     const formData = new FormData();
-    formData.append("title", productData.title); // Update here
+    formData.append("title", productData.title);
     formData.append("price", productData.price);
     formData.append("description", productData.description);
     formData.append("category", productData.category);
     formData.append("image", productData.image);
-    
+
     try {
       const response = await validateAndPostProduct(formData);
       setLoading(false);
 
       if (response.error) {
-        setValidationMessage(`❌ ${response.error}`);
+        setValidationMessage(isUrdu ? `❌ ${response.error}` : `❌ ${response.error}`);
       } else if (response.message) {
-        setValidationMessage(`✅ ${response.message}`);
-        
+        setValidationMessage(isUrdu ? `✅ ${response.message}` : `✅ ${response.message}`);
+
         if (response.product) {
           setTimeout(() => navigate("/"), 2000); // Redirect after showing message
         }
       }
     } catch (error) {
       setLoading(false);
-      setValidationMessage("❌ Error posting product. Please try again.");
+      setValidationMessage(isUrdu ? "❌ پروڈکٹ پوسٹ کرنے میں خرابی ہوئی۔ دوبارہ کوشش کریں۔" : "❌ Error posting product. Please try again.");
     }
   };
 
@@ -80,25 +79,25 @@ const PostProductForm = () => {
     <div className="w-full max-w-screen-lg bg-gray-50 mx-auto mt-10 p-8 shadow-2xl rounded-xl">
       <form className="bg-transparent" onSubmit={handleSubmit} encType="multipart/form-data">
         <h2 className="text-3xl py-10 font-extrabold text-center bg-gradient-to-r from-red-500 to-gray-700 text-transparent bg-clip-text drop-shadow-lg transition-all duration-300 hover:scale-105">
-          🚀 Add New Product 🛍️
+          🚀 {isUrdu ? "نیا پروڈکٹ شامل کریں" : "Add New Product"} 🛍️
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-4">
             <div>
-              <label className="block text-lg font-semibold mb-1 text-left ml-16">Name:</label>
+              <label className="block text-lg font-semibold mb-1 text-left ml-16">{isUrdu ? "عنوان:" : "Title:"}</label>
               <input
                 className="w-3/4 px-4 py-2 border-2 border-gray-300 bg-transparent rounded-lg text-black focus:ring-2 focus:ring-blue-400 focus:outline-none hover:shadow-md hover:shadow-blue-300 hover:-translate-y-1 transition"
-                name="name"
+                name="title"
                 type="text"
-                value={productData.name}
+                value={productData.title}
                 onChange={handleChange}
                 required
               />
             </div>
 
             <div>
-              <label className="block text-lg font-semibold mb-1 text-left ml-16">Price:</label>
+              <label className="block text-lg font-semibold mb-1 text-left ml-16">{isUrdu ? "قیمت:" : "Price:"}</label>
               <input
                 className="w-3/4 px-4 py-2 border-2 border-gray-300 bg-transparent rounded-lg text-black focus:ring-2 focus:ring-blue-400 focus:outline-none hover:shadow-md hover:shadow-blue-300 hover:-translate-y-1 transition"
                 name="price"
@@ -110,7 +109,7 @@ const PostProductForm = () => {
             </div>
 
             <div>
-              <label className="block text-lg font-semibold mb-1 text-left ml-16">Category:</label>
+              <label className="block text-lg font-semibold mb-1 text-left ml-16">{isUrdu ? "زمرہ:" : "Category:"}</label>
               <input
                 className="w-3/4 px-4 py-2 border-2 border-gray-300 bg-transparent rounded-lg text-black focus:ring-2 focus:ring-red-400 focus:outline-none hover:shadow-md hover:shadow-blue-300 hover:-translate-y-1 transition"
                 name="category"
@@ -123,15 +122,14 @@ const PostProductForm = () => {
           </div>
 
           <div>
-            <label className="block text-lg font-semibold mb-1 text-left ml-16">Image:</label>
+            <label className="block text-lg font-semibold mb-1 text-left ml-16">{isUrdu ? "تصویر:" : "Image:"}</label>
             <div
               {...getRootProps()}
               className={`w-full h-48 flex flex-col items-center justify-center border-4 border-dashed 
               rounded-lg cursor-pointer transition-all duration-300 text-gray-700
-              ${
-                isDragActive
-                  ? "border-blue-500 bg-blue-100 shadow-lg scale-105"
-                  : "border-gray-300 bg-gradient-to-br from-gray-100 to-gray-200 hover:shadow-xl hover:scale-105"
+              ${isDragActive
+                ? "border-blue-500 bg-blue-100 shadow-lg scale-105"
+                : "border-gray-300 bg-gradient-to-br from-gray-100 to-gray-200 hover:shadow-xl hover:scale-105"
               }`}
             >
               <input {...getInputProps()} />
@@ -145,16 +143,25 @@ const PostProductForm = () => {
                 <div className="flex flex-col items-center">
                   <span className="text-4xl">📸</span>
                   <p className="mt-2 text-sm font-semibold text-gray-600">
-                    Drag & drop an image here, or <span className="text-blue-500 underline">click to select</span>
+                    {isUrdu ? "یہاں تصویر ڈریگ اور ڈراپ کریں، یا" : "Drag & drop an image here, or"}{" "}
+                    <span className="text-blue-500 underline">{isUrdu ? "چننے کے لیے کلک کریں" : "click to select"}</span>
                   </p>
                 </div>
               )}
             </div>
           </div>
         </div>
-
-        <div className="mt-6">
-          <label className="block text-lg font-semibold mb-1 text-left ml-16">Description:</label>
+ {/* Language Toggle Button */}
+        <div className="flex justify-end mt-2">
+          <button
+            className="text-blue-500 text-lg font-semibold"
+            onClick={() => setIsUrdu(!isUrdu)}
+          >
+            {isUrdu ? "Switch to English" : "اردو میں تبدیل کریں"}
+          </button>
+        </div>
+        <div >
+          <label className="block text-lg font-semibold mb-1 text-left ml-16">{isUrdu ? "تفصیل:" : "Description:"}</label>
           <textarea
             className="w-full ml-12 px-4 py-3 border-2 bg-transparent rounded-lg border-gray-300 text-black focus:ring-2 focus:ring-red-900 focus:outline-none h-36 hover:shadow-md hover:shadow-blue-300 hover:-translate-y-1 transition"
             name="description"
@@ -178,9 +185,11 @@ const PostProductForm = () => {
             type="submit"
             disabled={loading}
           >
-            {loading ? "Validating..." : "Add Product"}
+            {loading ? (isUrdu ? "جانچ رہا ہے..." : "Validating...") : (isUrdu ? "پروڈکٹ شامل کریں" : "Add Product")}
           </button>
         </div>
+
+       
       </form>
     </div>
   );

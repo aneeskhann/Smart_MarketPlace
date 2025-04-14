@@ -14,7 +14,7 @@ const ProductMod = () => {
       <Hero/>
       <Categories/>
       
-      {
+            {
         products.length > 0 ?
         <Products products={products}/>
         :

@@ -13,7 +13,7 @@ export const validateAndPostProduct = async (req, res) => {
     console.log("🔹 Request received at /validate-and-post");
 
 
-    const { name, description } = req.body;
+    const { title, description,category,price, } = req.body;
     const image = req.file;
 
     if (!image) return res.status(400).json({ error: "Image is required" });
@@ -33,7 +33,7 @@ export const validateAndPostProduct = async (req, res) => {
         contents: [
           {
             parts: [
-              { text: `Does this image match the product description: "${description}"? Provide a yes/no response.` },
+              { text: `Does this image match the product description: "${description}"? analyze the description and image keenly then, Provide a yes/no response.` },
               { inline_data: { mime_type: "image/jpeg", data: imageBase64 } },
             ],
           },
@@ -48,19 +48,20 @@ export const validateAndPostProduct = async (req, res) => {
       fs.unlinkSync(imagePath); // Delete image if validation fails
       return res.status(400).json({ message: "Validation failed! Ensure the image matches the description." });
     }
-
-    // Save validated product
     const newProduct = await Product.create({
-      name,
+      title,
       description,
-      imageUrl: `/uploads/${image.filename}`,
+      image: `/uploads/${image.filename}`,
+      category,
+      price,
       validationResult: "Validated",
     });
+    console.log("✅ Product saved successfully:", newProduct);    
 
     res.status(201).json({ message: "Product validated & saved!", product: newProduct });
 
   } catch (error) {
     console.error("❌ Server Error:", error.message);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json(error.message);
   }
 };

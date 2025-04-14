@@ -12,7 +12,7 @@ const createProduct = async (req, res) => {
       price,
       description,
       category,
-      image: req.file.path,
+      image: req.file,
       rating,
     });
     const savedProduct = await newProduct.save();
@@ -39,6 +39,7 @@ const getProducts = async (req, res) => {
     console.log("Fetching all products");
     res.status(200).json(items); // Send products as JSON response
   } catch (error) {
+
     console.error("Error fetching products:", error);
     res.status(500).json({ error: "Failed to fetch products" });
   }

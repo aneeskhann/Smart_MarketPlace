@@ -6,7 +6,7 @@ const fakeStoreApiUrl = "https://fakestoreapi.com/products";
 // Function to post a new product to local server
 export const postProduct = async (formData) => {
   try {
-    const response = await axios.post(`${localApiUrl}/api/product`, formData, {
+    const response = await axios.post(`${localApiUrl}/api/products`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -48,8 +48,8 @@ export const getProducts = async () => {
 };
 
 export const validateProduct = (product) => {
-  if (!product.name || !product.price || !product.category) {
-    return { isValid: false, message: "Name, price, and category are required." };
+  if (!product.title || !product.price || !product.category) {
+    return { isValid: false, message: "Title, price, and category are required." };
   }
   return { isValid: true, message: "Product is valid." };
 };

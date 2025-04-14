@@ -3,7 +3,6 @@ import Footer from './components/Footer/Footer';
 import Header from './components/Header/Header.js'
 import Home from './modules/Home/Home.js';
 import {Routes, Route} from 'react-router-dom'
-import Product from './modules/Product/Product';
 import ProductMod from './modules/ProductMod/ProductMod';
 import ProductCategories from './modules/ProductCategories/ProductCategories';
 import Cart from './modules/Cart/Cart';
@@ -14,7 +13,7 @@ import Signin from './modules/Forms/Signin.js';
 import Signup from './modules/Forms/Signup.js';
 import PostProductForm from './modules/Forms/PostProductForm';
 import FAQS from './components/FAQS/FAQS';
-import ProductCard from "../src/modules/Product/Product.js"
+import ProductCard from "./modules/ProductCard/productCard.js"
 
 
 //comment
@@ -25,9 +24,9 @@ function App() {
       <Header/>
       <Routes>
         <Route path='/' element= {<Home/>}/>
-        <Route path="/" element= {<Product/>}/>
+        {/* <Route path="/" element= {<Product/>}/> */}
         <Route path='/products' element={<ProductMod/>}/>
-        <Route path='/products/:id' element={<ProductCard/>}/>
+        <Route path='/product/:id' element={<ProductCard/>}/>
         <Route path='/categories/:name' element={<ProductCategories/>}/>
         <Route path='/cart' element={<Cart/>}/>
         <Route path='/about' element={<About/>}/>

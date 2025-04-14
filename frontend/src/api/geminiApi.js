@@ -3,7 +3,7 @@ import axios from "axios";
 export const validateAndPostProduct = async (formData) => {
   try {
     const response = await axios.post(
-      "http://localhost:8000/api/gemini/validate-and-post",
+      "http://localhost:8000/api/validateAndPostProduct",
       formData,
       { headers: { "Content-Type": "multipart/form-data" } }
     );

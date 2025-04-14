@@ -7,7 +7,7 @@ import validateAndPostProduct from "./routes/geminiRoutes.js"; // Ensure correct
 import morgan from "morgan";
 import dotenv from "dotenv";
 
-dotenv.config({ path: "./.env" });
+dotenv.config({ path: "./env" });
 
 const app = express();
 
@@ -24,10 +24,10 @@ connection()
   .catch((err) => console.error("MongoDB connection failed:", err));
 
 // ✅ Fix Route Mounting
-app.use("/api/gemini", validateAndPostProduct); // Change this from "/api/product"
+app.use("/api", validateAndPostProduct); // Change this from "/api/product"
 app.use("/products", product_router);
 
-app.get("/api/gemini", (req, res) => {
+app.get("/api", (req, res) => {
   res.json({ message: "Welcome to the server" });
 });
 

@@ -5,6 +5,6 @@ import { validateAndPostProduct } from "../controllers/geminiController.js";
 const router = express.Router();
 
 // Route to validate image & post product
-router.post("/validate-and-post", upload.single("image"), validateAndPostProduct);
+router.post('/validateAndPostProduct', upload.single('image'), validateAndPostProduct);
 
 export default router;

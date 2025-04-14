@@ -4,9 +4,9 @@ import Loading from "../../components/Loaders/Loading";
 import axios from "axios";
 
 const localApiUrl = "http://localhost:8000";
-const fakeStoreApiUrl = "https://fakestoreapi.com";
+const fakeStoreApiUrl = "https://fakestoreapi.com/products";
 
-const Product = () => {
+const ProductCard = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
@@ -15,10 +15,12 @@ const Product = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location]);
+  
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
+    
         // Try fetching from local database first
         let response = await axios.get(`${localApiUrl}/product/${id}`);
         setProduct(response.data);
@@ -26,7 +28,7 @@ const Product = () => {
         console.warn("Product not found locally, trying FakeStore API...");
         try {
           // If not found locally, fetch from FakeStore API
-          let response = await axios.get(`${fakeStoreApiUrl}/products/${id}`);
+          let response = await axios.get(`${fakeStoreApiUrl}/${id}`);
           setProduct(response.data);
         } catch (err) {
           console.error("Error fetching product from FakeStore API:", err);
@@ -64,14 +66,19 @@ const Product = () => {
     <section className="text-gray-600 body-font overflow-hidden">
       <div className="container px-5 py-24 mx-auto">
         <div className="lg:w-4/5 mx-auto flex flex-wrap">
-          <img
-            alt={product.title || "Product Image"}
-            className="lg:w-1/2 w-full lg:h-auto max-h-[600px] h-64 object-center object-contain rounded"
-            src={product.image || "/placeholder-image.jpg"}
-          />
+        <img
+  alt={product.title || "Product Image"}
+  className="lg:w-1/2 w-full lg:h-auto max-h-[600px] h-64 object-center object-contain rounded"
+  src={
+    product.image?.startsWith("http")
+      ? product.image
+      : `${localApiUrl}${product.image}`
+  }
+/>
+
           <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
             <h2 className="text-sm title-font text-gray-500 tracking-widest">
-              {product.category || "Uncategorized"}
+              {product.category || "no category"}
             </h2>
             <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">
               {product.title || "Product Title"}
@@ -101,4 +108,4 @@ const Product = () => {
   );
 };
 
-export default Product;
+export default ProductCard;

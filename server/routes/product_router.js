@@ -25,6 +25,8 @@ router.post("/", upload.single("image"), async (req, res) => {
 
 // Routes for fetching products
 router.get("/", getProducts);
-router.get("/:id", getProductById);
+router.get("/product/:id", getProductById);
 
 export default router;
+
+
