@@ -20,15 +20,23 @@ const productSchema = new mongoose.Schema({
   image: {
     type: String,
     required: true,
+    get: function(value) {
+      if (!value) return value;
+      if (value.startsWith('http')) return value;
+      return `http://localhost:8000/${value}`;
+    }
   },
   rating: {
     rate: Number,
     count: Number
   },
   validationResult: {
-     type: String,
-     default: "Pending" 
-    }
+    type: String,
+    default: "Pending" 
+  }
+}, {
+  toJSON: { getters: true },
+  toObject: { getters: true }
 });
 
 const productsModel = mongoose.model("products", productSchema);

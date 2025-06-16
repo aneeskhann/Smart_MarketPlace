@@ -11,6 +11,7 @@ export default function Signin() {
         className="p-6 bg-slate-600 shadow-lg rounded-lg"
       >
         <SignIn />
+        
       </motion.div>
     </div>
   );

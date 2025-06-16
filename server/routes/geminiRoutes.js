@@ -1,10 +1,10 @@
 import express from "express";
-import upload from "../multer/multer_config.js"
+import { upload } from "../multer/multer_config.js"
 import { validateAndPostProduct } from "../controllers/geminiController.js";
 
 const router = express.Router();
 
 // Route to validate image & post product
-router.post('/validateAndPostProduct', upload.single('image'), validateAndPostProduct);
+router.post('/', upload.single('image'), validateAndPostProduct);
 
 export default router;

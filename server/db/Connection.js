@@ -7,14 +7,14 @@ dotenv.config({
 
 // console.log(process.env.MONGODB_URL); // Should print the MongoDB URL from .env
 
-const apiKey = "mongodb+srv://anees:anees7342@atlascluster.cq5fc6p.mongodb.net/";
+const apiKey = process.env.MONGODB_URL ;
 
 const connection = async () => {
   try {
     await mongoose.connect(apiKey , {
       dbName: "SMART"
     });
-    console.log("Connected on PORT:", process.env.PORT | 8000);
+    console.log("Connected on PORT:", process.env.PORT );
   } catch (error) {
     console.error('MongoDB connection failed:', error.message);
   }

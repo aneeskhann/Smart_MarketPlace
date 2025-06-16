@@ -29,17 +29,10 @@ const createProduct = async (req, res) => {
 
 const getProducts = async (req, res) => {
   try {
-    const product = await productsModel.find(); // Fetch all products
-
-    const items = product.map((product) => ({
-      ...product.toObject(), // Convert to plain JS object
-      image: `http://localhost:8000/${product.image}`, // Construct image URL
-    }));
-
-    console.log("Fetching all products");
-    res.status(200).json(items); // Send products as JSON response
+    const products = await productsModel.find();
+    console.log("Fetching all products:", products);
+    res.status(200).json(products);
   } catch (error) {
-
     console.error("Error fetching products:", error);
     res.status(500).json({ error: "Failed to fetch products" });
   }
@@ -50,17 +43,14 @@ const getProducts = async (req, res) => {
 
 const getProductById = async (req, res) => {
   try {
-    const productId = req.params.id;
-    const product = await productsModel.findById(productId);
-
+    const product = await productsModel.findById(req.params.id);
     if (!product) {
-      return res.status(404).json({ message: 'Product not found' });
+      return res.status(404).json({ error: "Product not found" });
     }
-
     res.status(200).json(product);
   } catch (error) {
-    console.error('Failed to get product:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    console.error("Error fetching product:", error);
+    res.status(500).json({ error: "Failed to fetch product" });
   }
 };
 

@@ -40,6 +40,9 @@ const StoreProvider = ({ children }) => {
     syncCart(updatedCart);
   };
 
+
+  
+
   const handleDec = (id) => {
     const updatedCart = carts
       .map((item) =>
@@ -50,14 +53,12 @@ const StoreProvider = ({ children }) => {
     syncCart(updatedCart);
   };
 
-  const removeFromCart = (id) => {
-    const updatedCart = carts.filter((item) => item.id !== id);
-    syncCart(updatedCart);
-  };
-
   const clearCart = () => {
-    syncCart([]);
+    localStorage.removeItem("cart");
+    setCarts([]);
+    setTotalBill(0);
   };
+ 
 
   // Auto calculate total
   useEffect(() => {
@@ -77,8 +78,8 @@ const StoreProvider = ({ children }) => {
     totalBill,
     handleInc,
     handleDec,
-    removeFromCart,
     clearCart,
+    syncCart,
   };
 
   return (

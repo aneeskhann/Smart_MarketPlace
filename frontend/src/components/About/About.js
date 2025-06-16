@@ -13,33 +13,31 @@ const About = () => {
           <h2 className="text-3xl font-extrabold text-center mb-2 text-gray-900">
             Meet Our Team
           </h2>
-          <div className="flex flex-wrap -m-4 justify-around mt-10">
+          <div className="flex flex-wrap -m-4 justify-center mt-10">
             {/* First Section */}
-            <div className="lg:w-1/3 lg:mb-0 mb-6 p-4">
-              <div className="h-full text-center transition-transform duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl rounded-lg p-6 bg-white shadow-md hover:bg-red-100 hover:shadow-red-300">
+            <div className="sm:w-full md:w-1/2 lg:w-1/3 lg:mb-0 mb-6 p-4">
+              <div className="h-full text-center transition-transform duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl rounded-lg p-6 bg-slate-100 shadow-md hover:bg-red-100 hover:shadow-red-200">
                 <img
                   alt="testimonial"
-                  className="w-20 h-20 mb-8 object-cover object-center rounded-full inline-block border-2 border-gray-200 bg-gray-100"
+                  className="w-20 h-20 mb-8 object-cover object-center rounded-full inline-block border-2 border-gray-300 bg-gray-100"
                   src={aneess}
                 />
                 <p className="leading-relaxed">
-                  Building interactive and responsive user interfaces.
-                  Continuously learning and staying updated with the latest
-                  trends and best practices in React development, Anees is
-                  eager to contribute to projects and deliver high-quality
-                  React-based solutions.
+             Building interactive and responsive user interfaces using the MERN stack. With expertise in integrating cloud services, I continuously learn and stay updated with the latest trends and best practices in React and cloud technologies. Eager to contribute to projects, I aim to deliver high-quality MERN-based solutions and seamless cloud integrations.
+
+
                 </p>
                 <span className="inline-block h-1 w-10 rounded bg-red-500 mt-6 mb-4"></span>
                 <h2 className="text-gray-900 font-medium title-font tracking-wider text-sm">
                   Muhammad Anees
                 </h2>
-                <p className="text-gray-500">Frontend Developer</p>
+                <p className="text-gray-500">MERN stack Developer</p>
               </div>
             </div>
 
             {/* Second Section */}
-            <div className="lg:w-1/3 lg:mb-0 mb-6 p-4">
-              <div className="h-full text-center transition-transform duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl rounded-lg p-6 bg-white shadow-md  hover:bg-red-100 hover:shadow-red-300">
+            <div className="sm:w-full md:w-1/2 lg:w-1/3 lg:mb-0 mb-6 p-4">
+              <div className="h-full text-center transition-transform duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl rounded-lg p-6 bg-slate-100 shadow-md hover:bg-red-100 hover:shadow-red-300">
                 <img
                   alt="testimonial"
                   className="w-20 h-20 mb-8 object-cover object-center rounded-full inline-block border-2 border-gray-200 bg-gray-100"
@@ -61,8 +59,8 @@ const About = () => {
             </div>
 
             {/* Third Section */}
-            <div className="lg:w-1/3 lg:mb-0 mb-6 p-4">
-              <div className="h-full text-center transition-transform duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl rounded-lg p-6 bg-white shadow-md  hover:bg-red-100 hover:shadow-red-300">
+            <div className="sm:w-full md:w-1/2 lg:w-1/3 lg:mb-0 mb-6 p-4">
+              <div className="h-full text-center transition-transform duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl rounded-lg p-6 bg-slate-100 shadow-md hover:bg-red-100 hover:shadow-red-300">
                 <img
                   alt="testimonial"
                   className="w-20 h-20 mb-8 object-cover object-center rounded-full inline-block border-2 border-gray-200 bg-gray-100"

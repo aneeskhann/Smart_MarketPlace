@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { validateAndPostProduct } from "../../api/geminiApi"; // Updated API call
 import { useNavigate } from "react-router-dom";
 import { useDropzone } from "react-dropzone";
+import axios from "axios";
+import { useUser } from "@clerk/clerk-react";
 
 const PostProductForm = () => {
+  const { user, isSignedIn } = useUser();
   const navigate = useNavigate();
+  const [categories, setCategories] = useState([]);
+  const [showCustomCategory, setShowCustomCategory] = useState(false);
   const [productData, setProductData] = useState({
     title: "", 
     price: "",
@@ -17,6 +22,31 @@ const PostProductForm = () => {
   const [loading, setLoading] = useState(false); // State to show loading while API request is in progress
   const [isUrdu, setIsUrdu] = useState(false); // Toggle state for language
 
+  useEffect(() => {
+    // Check if user is signed in and is a seller
+    if (!isSignedIn) {
+      navigate('/signin');
+      return;
+    }
+
+    const userRole = user?.publicMetadata?.role;
+    if (userRole !== 'seller') {
+      navigate('/role-selection');
+      return;
+    }
+
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/api/categories");
+        setCategories(response.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, [user, isSignedIn, navigate]);
+
   const handleChange = (e) => {
     setProductData({ ...productData, [e.target.name]: e.target.value });
   };
@@ -26,6 +56,33 @@ const PostProductForm = () => {
       ...prev,
       image: file, 
     }));
+  };
+
+  const handleCategoryChange = (e) => {
+    if (e.target.value === "custom") {
+      setShowCustomCategory(true);
+      setProductData({ ...productData, category: "" });
+    } else {
+      setShowCustomCategory(false);
+      setProductData({ ...productData, category: e.target.value });
+    }
+  };
+
+  const handleCustomCategorySubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("http://localhost:8000/api/categories", {
+        name: productData.category,
+        description: `Products in ${productData.category} category`
+      });
+      
+      setCategories([...categories, response.data]);
+      setShowCustomCategory(false);
+      setProductData({ ...productData, category: response.data.name });
+    } catch (error) {
+      console.error("Error creating custom category:", error);
+      alert("Failed to create custom category. Please try again.");
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -109,15 +166,57 @@ const PostProductForm = () => {
             </div>
 
             <div>
-              <label className="block text-lg font-semibold mb-1 text-left ml-16">{isUrdu ? "زمرہ:" : "Category:"}</label>
-              <input
-                className="w-3/4 px-4 py-2 border-2 border-gray-300 bg-transparent rounded-lg text-black focus:ring-2 focus:ring-red-400 focus:outline-none hover:shadow-md hover:shadow-blue-300 hover:-translate-y-1 transition"
-                name="category"
-                type="text"
-                value={productData.category}
-                onChange={handleChange}
-                required
-              />
+              <label className="block text-lg font-semibold mb-1 text-left ml-16">
+                {isUrdu ? "زمرہ:" : "Category:"}
+              </label>
+              {!showCustomCategory ? (
+                <select
+                  className="w-3/4 px-4 py-2 border-2 border-gray-300 bg-transparent rounded-lg text-black focus:ring-2 focus:ring-red-400 focus:outline-none hover:shadow-md hover:shadow-blue-300 hover:-translate-y-1 transition"
+                  name="category"
+                  value={productData.category}
+                  onChange={handleCategoryChange}
+                  required
+                >
+                  <option value="">Select Category</option>
+                  {categories.map((category) => (
+                    <option key={category._id} value={category.name}>
+                      {category.name}
+                    </option>
+                  ))}
+                  <option value="custom">+ Add New Category</option>
+                </select>
+              ) : (
+                <div className="w-3/4">
+                  <input
+                    className="w-full px-4 py-2 border-2 border-gray-300 bg-transparent rounded-lg text-black focus:ring-2 focus:ring-red-400 focus:outline-none hover:shadow-md hover:shadow-blue-300 hover:-translate-y-1 transition"
+                    name="category"
+                    type="text"
+                    value={productData.category}
+                    onChange={handleChange}
+                    placeholder="Enter new category name"
+                    required
+                  />
+                  <div className="mt-2 flex gap-2">
+                    <button
+                      type="button"
+                      onClick={handleCustomCategorySubmit}
+                      className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
+                    >
+                      Add Category
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowCustomCategory(false);
+                        setProductData({ ...productData, category: "" });
+                      }}
+                      className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 

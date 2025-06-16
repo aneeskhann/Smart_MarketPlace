@@ -1,10 +1,17 @@
 import express from "express";
-import { getProducts, getProductById } from "../controllers/product.js"; // Removed createProduct import
+import { getProducts, getProductById } from "../controllers/product.js";
 import { validateAndPostProduct } from "../controllers/geminiController.js"; 
-import upload from "../multer/multer_config.js";
+import {upload} from "../multer/multer_config.js";
 
 const router = express.Router();
 
+// GET all products
+router.get("/", getProducts);
+
+// GET product by ID
+router.get("/:id", getProductById);
+
+// POST new product
 router.post("/", upload.single("image"), async (req, res) => {
   try {
     console.log("File received:", req.file); // Debugging line
@@ -22,10 +29,6 @@ router.post("/", upload.single("image"), async (req, res) => {
     res.status(500).json({ message: "Error validating product", error: error.message });
   }
 });
-
-// Routes for fetching products
-router.get("/", getProducts);
-router.get("/product/:id", getProductById);
 
 export default router;
 

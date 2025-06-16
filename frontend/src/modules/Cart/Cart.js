@@ -1,13 +1,12 @@
 import React, { useContext, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { StoreContext } from "../../Context/Context";
 
 const Cart = () => {
-  const navigate = useNavigate();
-  
+   
   
   const inputRef = useRef(null);
-  const { handleInc, handleDec, carts, totalBill } = useContext(StoreContext);
+  const { handleInc, handleDec, carts, totalBill,clearCart,syncCart } = useContext(StoreContext);
 
   
 
@@ -21,10 +20,9 @@ const Cart = () => {
 
   const removeProduct = (id) => {
     const updatedCart = carts.filter((item) => item.id !== id);
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
-    navigate("/cart");
+    syncCart(updatedCart);
   };
-
+  
   // const updateQuantity= (id) => {
   //   const updateCart= carts.map((item) => {
   //     if(item.id === id) {
@@ -68,7 +66,7 @@ const Cart = () => {
                   <div className="w-20">
                     <img
                       className="h-24"
-                      src={`http://localhost:3000/`+cartItems?.image}
+                      src={cartItems?.image}
                       alt={cartItems?.title}
                     />
                   </div>
@@ -76,11 +74,11 @@ const Cart = () => {
                     <span className="font-bold text-sm">
                       {cartItems?.title}
                     </span>
-                    <span className="text-red-500 text-xs capitalize">
+                    <span className="text-red-500 mt-6 text-s capitalize">
                       {cartItems?.category}
                     </span>
                     <div
-                      className="font-semibold hover:text-red-500 text-gray-500 text-xs cursor-pointer"
+                      className="font-semibold hover:text-red-500 hover:text-sm text-gray-500 text-xs cursor-pointer"
                       onClick={() => removeProduct(cartItems?.id)}
                     >
                       Remove
@@ -129,18 +127,26 @@ const Cart = () => {
             );
           })}
 
-          <Link
-            to="/products"
-            className="flex font-semibold text-indigo-600 text-sm mt-10"
-          >
-            <svg
-              className="fill-current mr-2 text-indigo-600 w-4"
-              viewBox="0 0 448 512"
-            >
-              <path d="M134.059 296H436c6.627 0 12-5.373 12-12v-56c0-6.627-5.373-12-12-12H134.059v-46.059c0-21.382-25.851-32.09-40.971-16.971L7.029 239.029c-9.373 9.373-9.373 24.569 0 33.941l86.059 86.059c15.119 15.119 40.971 4.411 40.971-16.971V296z" />
-            </svg>
-            Continue Shopping
-          </Link>
+<Link
+  to="/products"
+  className="flex font-semibold text-indigo-600 text-sm mt-10"
+>
+  <svg
+    className="fill-current mr-2 text-indigo-600 w-4"
+    viewBox="0 0 448 512"
+  >
+    <path d="..." />
+  </svg>
+  Continue Shopping
+</Link>
+
+<button
+  className="mt-4 bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded text-sm font-semibold"
+  onClick={clearCart}
+>
+  Clear Cart
+</button>
+
         </div>
 
         <div id="summary" className="w-1/4 px-8 py-10">

@@ -1,12 +1,11 @@
 import axios from "axios";
 
 const localApiUrl = "http://localhost:8000";
-const fakeStoreApiUrl = "https://fakestoreapi.com/products";
 
 // Function to post a new product to local server
 export const postProduct = async (formData) => {
   try {
-    const response = await axios.post(`${localApiUrl}/api/products`, formData, {
+    const response = await axios.post(`${localApiUrl}/api/validateAndPostProduct`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -25,22 +24,12 @@ export const postProduct = async (formData) => {
   }
 };
 
-// Function to get all products (from both FakeStore API and local database)
+// Function to get all products from local database
 export const getProducts = async () => {
   try {
-    // Fetch from local database
-    const localResponse = await axios.get(`${localApiUrl}/products`);
-    const localProducts = localResponse.status === 200 ? localResponse.data : [];
-
-    // Fetch from FakeStore API
-    const fakeStoreResponse = await axios.get(fakeStoreApiUrl);
-    const fakeStoreProducts = fakeStoreResponse.status === 200 ? fakeStoreResponse.data : [];
-
-    // Merge both product sources
-    const combinedProducts = [...fakeStoreProducts, ...localProducts];
-
-    console.log("Final Combined Products:", combinedProducts);
-    return combinedProducts;
+    const response = await axios.get(`${localApiUrl}/api/products`);
+    console.log("Local products response:", response.data);
+    return response.data;
   } catch (error) {
     console.error("Error fetching products:", error.response?.data || error.message);
     return []; // Return empty array if API fails
@@ -54,24 +43,14 @@ export const validateProduct = (product) => {
   return { isValid: true, message: "Product is valid." };
 };
 
-
-// Function to get a product by ID (Check local DB first, then FakeStore API)
+// Function to get a product by ID from local database
 export const getProductById = async (id) => {
   try {
-    // First, check in the local database
-    const localResponse = await axios.get(`${localApiUrl}/product/${id}`);
-    return localResponse.data;
+    const response = await axios.get(`${localApiUrl}/api/products/${id}`);
+    return response.data;
   } catch (error) {
-    console.log(`Product not found in local database, checking FakeStore API...`);
-
-    // If not found locally, try FakeStore API
-    try {
-      const fakeStoreResponse = await axios.get(`${fakeStoreApiUrl}/${id}`);
-      return fakeStoreResponse.data;
-    } catch (err) {
-      console.error("Error fetching product by ID:", err.response?.data || err.message);
-      throw new Error("Failed to fetch product");
-    }
+    console.error("Error fetching product by ID:", error.response?.data || error.message);
+    throw new Error("Failed to fetch product");
   }
 };
 
