@@ -1,51 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { validateAndPostProduct } from "../../api/geminiApi"; // Updated API call
 import { useNavigate } from "react-router-dom";
 import { useDropzone } from "react-dropzone";
-import axios from "axios";
-import { useUser } from "@clerk/clerk-react";
 
 const PostProductForm = () => {
-  const { user, isSignedIn } = useUser();
   const navigate = useNavigate();
-  const [categories, setCategories] = useState([]);
-  const [showCustomCategory, setShowCustomCategory] = useState(false);
   const [productData, setProductData] = useState({
     title: "", 
     price: "",
     description: "",
     category: "",
+    stock: "", // Added stock field
     image: null,
   });
 
   const [validationMessage, setValidationMessage] = useState(""); // State to display validation response
   const [loading, setLoading] = useState(false); // State to show loading while API request is in progress
   const [isUrdu, setIsUrdu] = useState(false); // Toggle state for language
-
-  useEffect(() => {
-    // Check if user is signed in and is a seller
-    if (!isSignedIn) {
-      navigate('/signin');
-      return;
-    }
-
-    const userRole = user?.publicMetadata?.role;
-    if (userRole !== 'seller') {
-      navigate('/role-selection');
-      return;
-    }
-
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.get("http://localhost:8000/api/categories");
-        setCategories(response.data);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
-
-    fetchCategories();
-  }, [user, isSignedIn, navigate]);
 
   const handleChange = (e) => {
     setProductData({ ...productData, [e.target.name]: e.target.value });
@@ -58,37 +29,11 @@ const PostProductForm = () => {
     }));
   };
 
-  const handleCategoryChange = (e) => {
-    if (e.target.value === "custom") {
-      setShowCustomCategory(true);
-      setProductData({ ...productData, category: "" });
-    } else {
-      setShowCustomCategory(false);
-      setProductData({ ...productData, category: e.target.value });
-    }
-  };
-
-  const handleCustomCategorySubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post("http://localhost:8000/api/categories", {
-        name: productData.category,
-        description: `Products in ${productData.category} category`
-      });
-      
-      setCategories([...categories, response.data]);
-      setShowCustomCategory(false);
-      setProductData({ ...productData, category: response.data.name });
-    } catch (error) {
-      console.error("Error creating custom category:", error);
-      alert("Failed to create custom category. Please try again.");
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!productData.title || !productData.price || !productData.category || !productData.description || !productData.image) {
+    // Validation: Check if all fields are filled
+    if (!productData.title || !productData.price || !productData.category || !productData.description || !productData.stock || !productData.image) {
       setValidationMessage(isUrdu ? "⚠️ براہ کرم تمام فیلڈز مکمل کریں اور ایک تصویر اپ لوڈ کریں۔" : "⚠️ Please fill in all fields and upload an image.");
       return;
     }
@@ -101,6 +46,7 @@ const PostProductForm = () => {
     formData.append("price", productData.price);
     formData.append("description", productData.description);
     formData.append("category", productData.category);
+    formData.append("stock", productData.stock); // Append stock value
     formData.append("image", productData.image);
 
     try {
@@ -116,6 +62,7 @@ const PostProductForm = () => {
           setTimeout(() => navigate("/"), 2000); // Redirect after showing message
         }
       }
+      
     } catch (error) {
       setLoading(false);
       setValidationMessage(isUrdu ? "❌ پروڈکٹ پوسٹ کرنے میں خرابی ہوئی۔ دوبارہ کوشش کریں۔" : "❌ Error posting product. Please try again.");
@@ -131,6 +78,7 @@ const PostProductForm = () => {
       }
     },
   });
+
 
   return (
     <div className="w-full max-w-screen-lg bg-gray-50 mx-auto mt-10 p-8 shadow-2xl rounded-xl">
@@ -166,57 +114,28 @@ const PostProductForm = () => {
             </div>
 
             <div>
-              <label className="block text-lg font-semibold mb-1 text-left ml-16">
-                {isUrdu ? "زمرہ:" : "Category:"}
-              </label>
-              {!showCustomCategory ? (
-                <select
-                  className="w-3/4 px-4 py-2 border-2 border-gray-300 bg-transparent rounded-lg text-black focus:ring-2 focus:ring-red-400 focus:outline-none hover:shadow-md hover:shadow-blue-300 hover:-translate-y-1 transition"
-                  name="category"
-                  value={productData.category}
-                  onChange={handleCategoryChange}
-                  required
-                >
-                  <option value="">Select Category</option>
-                  {categories.map((category) => (
-                    <option key={category._id} value={category.name}>
-                      {category.name}
-                    </option>
-                  ))}
-                  <option value="custom">+ Add New Category</option>
-                </select>
-              ) : (
-                <div className="w-3/4">
-                  <input
-                    className="w-full px-4 py-2 border-2 border-gray-300 bg-transparent rounded-lg text-black focus:ring-2 focus:ring-red-400 focus:outline-none hover:shadow-md hover:shadow-blue-300 hover:-translate-y-1 transition"
-                    name="category"
-                    type="text"
-                    value={productData.category}
-                    onChange={handleChange}
-                    placeholder="Enter new category name"
-                    required
-                  />
-                  <div className="mt-2 flex gap-2">
-                    <button
-                      type="button"
-                      onClick={handleCustomCategorySubmit}
-                      className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
-                    >
-                      Add Category
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setShowCustomCategory(false);
-                        setProductData({ ...productData, category: "" });
-                      }}
-                      className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-              )}
+              <label className="block text-lg font-semibold mb-1 text-left ml-16">{isUrdu ? "زمرہ:" : "Category:"}</label>
+              <input
+                className="w-3/4 px-4 py-2 border-2 border-gray-300 bg-transparent rounded-lg text-black focus:ring-2 focus:ring-red-400 focus:outline-none hover:shadow-md hover:shadow-blue-300 hover:-translate-y-1 transition"
+                name="category"
+                type="text"
+                value={productData.category}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            {/* Stock Input */}
+            <div>
+              <label className="block text-lg font-semibold mb-1 text-left ml-16">{isUrdu ? "اسٹاک:" : "Stock:"}</label>
+              <input
+                className="w-3/4 px-4 py-2 border-2 border-gray-300 bg-transparent rounded-lg text-black focus:ring-2 focus:ring-green-400 focus:outline-none hover:shadow-md hover:shadow-blue-300 hover:-translate-y-1 transition"
+                name="stock"
+                type="number"
+                value={productData.stock}
+                onChange={handleChange}
+                required
+              />
             </div>
           </div>
 
@@ -250,7 +169,7 @@ const PostProductForm = () => {
             </div>
           </div>
         </div>
- {/* Language Toggle Button */}
+        {/* Language Toggle Button */}
         <div className="flex justify-end mt-2">
           <button
             className="text-blue-500 text-lg font-semibold"
@@ -287,8 +206,6 @@ const PostProductForm = () => {
             {loading ? (isUrdu ? "جانچ رہا ہے..." : "Validating...") : (isUrdu ? "پروڈکٹ شامل کریں" : "Add Product")}
           </button>
         </div>
-
-       
       </form>
     </div>
   );

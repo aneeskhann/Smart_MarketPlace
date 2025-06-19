@@ -33,7 +33,7 @@ const ProductCategories = () => {
 
   if (loading) return <div><Loading/></div>;
   if (error) return <div className="text-center text-red-500 mt-10">{error}</div>;
-  if (products.length === 0) return <div className="text-center text-gray-500 mt-10">No products found in this category.</div>;
+  if (products.length === 0) return <div className="text-center text-gray-500 ">No products found in this category.</div>;
 
   return (
     <div>

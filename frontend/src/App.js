@@ -14,10 +14,10 @@ import PostProductForm from './modules/Forms/PostProductForm';
 import FAQS from './components/FAQS/FAQS';
 import ProductCard from "./modules/ProductCard/productCard.js"
 import { SignedIn, SignedOut, RedirectToSignIn } from '@clerk/clerk-react';
-
+import 'react-toastify/dist/ReactToastify.css'; 
 import Categories from './components/Categories/Categories';
-
-
+import { ToastContainer } from 'react-toastify';
+import StockManagement  from './modules/StockManagement/StockManagement.js';
 
 
 
@@ -25,10 +25,15 @@ import Categories from './components/Categories/Categories';
 function App() {
   return (
     <StoreProvider>
+
+      <ToastContainer />
+
+
       <Header/>
       <Routes>
         <Route path='/' element= {<Home/>}/>
-   
+
+        {/* <Route path='/stocks' element= {<StockManagement/>}/> */}
         <Route path='/products' element={<ProductMod/>}/>
         <Route path='/product/:id' element={<ProductCard/>}/>
         <Route path='/categories' element={<Categories />} />
@@ -44,6 +49,19 @@ function App() {
             <>
               <SignedIn>
                 <PostProductForm />
+              </SignedIn>
+              <SignedOut>
+                <RedirectToSignIn />
+              </SignedOut>
+            </>
+          }
+        />
+        <Route
+          path="/stocks"
+          element={
+            <>
+              <SignedIn>
+                <StockManagement />
               </SignedIn>
               <SignedOut>
                 <RedirectToSignIn />

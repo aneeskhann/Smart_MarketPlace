@@ -1,36 +1,39 @@
 import productsModel from "../model/productModel.js";
 
-
+// Create a product with stock (quantity)
 const createProduct = async (req, res) => {
   try {
-    const { title, price, description, category, rating } = req.body;
+    const { title, price, description, category, rating, quantity } = req.body;
 
-    console.log(req.body);
+    if (!quantity || quantity <= 0) {
+      return res.status(400).json({ error: "Please provide a valid quantity" });
+    }
 
     const newProduct = new productsModel({
       title,
       price,
       description,
       category,
-      image: req.file,
+      image: req.file, // Assuming you're handling image uploads
       rating,
+      quantity, // Stock quantity for the product
     });
-    const savedProduct = await newProduct.save();
 
-    console.log("Product created successfully");
-    console.log("Saved product:", savedProduct);
+    const savedProduct = await newProduct.save();
+    console.log("Product created successfully:", savedProduct);
 
     res.status(201).json(savedProduct);
   } catch (error) {
-    console.error(error);
+    console.error("Error creating product:", error);
     res.status(500).json({ error: "Failed to create product" });
   }
 };
 
+// Fetch all products
 const getProducts = async (req, res) => {
   try {
     const products = await productsModel.find();
-    console.log("Fetching all products:", products);
+    console.log("Fetched products:", products);
     res.status(200).json(products);
   } catch (error) {
     console.error("Error fetching products:", error);
@@ -38,9 +41,7 @@ const getProducts = async (req, res) => {
   }
 };
 
-
-
-
+// Fetch a specific product by ID
 const getProductById = async (req, res) => {
   try {
     const product = await productsModel.findById(req.params.id);
@@ -54,4 +55,34 @@ const getProductById = async (req, res) => {
   }
 };
 
-export { createProduct, getProducts, getProductById };
+// Update product stock quantity (e.g., after a purchase)
+const updateProductStock = async (req, res) => {
+  try {
+    const { productId, quantity } = req.body;
+
+    if (!quantity || quantity < 0) {
+      return res.status(400).json({ error: "Please provide a valid quantity" });
+    }
+
+    const product = await productsModel.findById(productId);
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    // Decrease the quantity when a product is purchased
+    if (product.quantity < quantity) {
+      return res.status(400).json({ error: "Insufficient stock" });
+    }
+
+    product.quantity -= quantity;
+    const updatedProduct = await product.save();
+
+    console.log("Product stock updated:", updatedProduct);
+    res.status(200).json(updatedProduct);
+  } catch (error) {
+    console.error("Error updating product stock:", error);
+    res.status(500).json({ error: "Failed to update product stock" });
+  }
+};
+
+export { createProduct, getProducts, getProductById, updateProductStock };

@@ -33,6 +33,12 @@ const ProductCard = () => {
   const handleCart = (product, redirect) => {
     if (!product) return;
 
+    // Check if the product is in stock
+    if (product.quantity <= 0) {
+      alert("Sorry, this product is out of stock!");
+      return;
+    }
+
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
     const isProductExist = cart.find((item) => item.id === product.id || item._id === product._id);
 
@@ -91,11 +97,18 @@ const ProductCard = () => {
                 Buy Now
               </button>
               <button
-                className="flex ml-6 text-white bg-blue-500 border-0 py-3 px-6 focus:outline-none hover:bg-blue-600 rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105"
+                className="flex ml-6 text-white bg-blue-500 border-0 py-3 px-6   focus:outline-none hover:bg-blue-600 rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105"
                 onClick={() => handleCart(product)}
               >
                 Add to Cart
               </button>
+            </div>
+
+            {/* Display remaining quantity */}
+            <div className="mb-6">
+              <p className="text-gray-600 text-lg">
+                {product.quantity > 0 ? `Remaining stock: ${product.quantity}` : "Out of Stock"}
+              </p>
             </div>
 
             {/* Optional Reviews or Ratings */}

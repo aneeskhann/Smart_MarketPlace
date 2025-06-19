@@ -21,6 +21,7 @@ const Header = () => {
   // Add Post Product link only for sellers
   if (isSignedIn && isSeller) {
     navigations.push({ name: "Post Product", path: "/post-product" });
+    navigations.push({ name: "Stock Management", path: "/stocks" }); // New link
   }
 
   return (

@@ -167,20 +167,7 @@ const Cart = () => {
               <option>Standard shipping - $10.00</option>
             </select>
           </div>
-          <div className="py-10">
-            <label
-              for="promo"
-              className="font-semibold inline-block mb-3 text-sm uppercase"
-            >
-              Promo Code
-            </label>
-            <input
-              type="text"
-              id="promo"
-              placeholder="Enter your code"
-              className="p-2 text-sm w-full"
-            />
-          </div>
+         
           <button className="bg-red-500 hover:bg-red-600 px-5 py-2 text-sm text-white uppercase">
             Apply
           </button>

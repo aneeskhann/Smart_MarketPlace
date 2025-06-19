@@ -10,8 +10,8 @@ import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
 import category_router from "./routes/category_router.js";
-
-
+import stockRoutes from "./routes/stockRoutes.js";
+import { createStock } from "./controllers/stockController.js";
 
 
 dotenv.config({ path: "./env" });
@@ -42,11 +42,13 @@ connection()
   .then(() => console.log("MongoDB connected successfully"))
   .catch((err) => console.error("MongoDB connection failed:", err));
 
+
+await createStock();
 // API Routes
 app.use("/api/products", product_router);
 app.use("/api/categories", category_router);
 app.use("/api/validateAndPostProduct", validateAndPostProduct);
-
+app.use("/api/stock", stockRoutes);
 // Health check route
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", message: "Server is running" });

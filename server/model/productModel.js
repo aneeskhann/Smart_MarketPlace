@@ -17,6 +17,10 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  quantity: { 
+    type: Number, 
+    default: 1, // Stock quantity for the product
+  },
   image: {
     type: String,
     required: true,
