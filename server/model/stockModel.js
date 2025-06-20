@@ -3,13 +3,13 @@ import mongoose from 'mongoose';
 const stockSchema = new mongoose.Schema({
   productId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'products',  // Refers to the 'products' collection
+    ref: 'products', // This connects to the productsModel
     required: true,
   },
   quantity: {
     type: Number,
     required: true,
-    default: 0,  // Initial stock set to 0
+    default: 0,
   },
   lastUpdated: {
     type: Date,

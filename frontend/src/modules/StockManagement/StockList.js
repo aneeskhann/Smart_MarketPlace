@@ -1,5 +1,14 @@
 import React from "react";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button, Paper } from "@mui/material";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Button,
+  Paper,
+} from "@mui/material";
 
 const StockList = ({ stocks, onAdjustStock, onEditStock }) => {
   return (
@@ -17,28 +26,30 @@ const StockList = ({ stocks, onAdjustStock, onEditStock }) => {
         <TableBody>
           {stocks.map((stock) => (
             <TableRow key={stock._id}>
-              <TableCell>{stock.productId.title}</TableCell> {/* Show product title */}
-              <TableCell>{stock.productId.price}</TableCell> {/* Show product price */}
-              <TableCell>{stock.productId.category}</TableCell> {/* Show product category */}
-              <TableCell>{stock.quantity}</TableCell> {/* Show stock quantity */}
+              <TableCell>{stock.productId?.title || "N/A"}</TableCell>
+              <TableCell>{stock.productId?.price || "N/A"}</TableCell>
+              <TableCell>{stock.productId?.category || "N/A"}</TableCell>
+              <TableCell>{stock.quantity}</TableCell>
               <TableCell>
-                {/* Adjust stock quantity */}
                 <Button
+                  type="button"
                   variant="contained"
                   color="primary"
-                  onClick={() => onAdjustStock(stock._id, 1)} // Increase stock by 1
+                  onClick={() => onAdjustStock(stock._id, 1)}
                 >
                   Increase
                 </Button>
                 <Button
+                  type="button"
                   variant="contained"
                   color="secondary"
-                  onClick={() => onAdjustStock(stock._id, -1)} // Decrease stock by 1
+                  onClick={() => onAdjustStock(stock._id, -1)}
                   style={{ marginLeft: 8 }}
                 >
                   Decrease
                 </Button>
                 <Button
+                  type="button"
                   variant="contained"
                   color="default"
                   onClick={() => onEditStock(stock)}

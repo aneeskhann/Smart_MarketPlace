@@ -12,9 +12,9 @@ const StockManagement = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [currentStockItem, setCurrentStockItem] = useState(null);
 
-  const url = "http://localhost:8000"; // Update with your backend URL
+  const url = "http://localhost:8000"; // Update if backend is different
 
-  // Fetch stock levels from backend
+  // Fetch stock levels
   useEffect(() => {
     fetchStockLevels();
   }, []);
@@ -22,8 +22,7 @@ const StockManagement = () => {
   const fetchStockLevels = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${url}/api/stock/`); 
-      console.log("Fetched Stock Data:", response.data);
+      const response = await axios.get(`${url}/api/stock/`);
       setStocks(response.data);
     } catch (error) {
       console.error("Error fetching stock data:", error);
@@ -33,13 +32,18 @@ const StockManagement = () => {
     setLoading(false);
   };
 
-  // Handle stock updates (increase/decrease)
+  // Handle quantity update via Edit
   const handleStockUpdate = async (stockData) => {
     try {
-      await axios.post(`${url}/api/stock/update`, stockData);  // Ensure backend expects POST
+      await axios.put(`${url}/api/stock/update`, {
+        productId: stockData.productId._id,
+        quantity: stockData.quantity,
+        type: "set",
+      });
+
       setSnackbarMessage("Stock updated successfully!");
       setOpenSnackbar(true);
-      fetchStockLevels();
+      fetchStockLevels(); // Refresh updated data
     } catch (error) {
       console.error("Error updating stock:", error);
       setSnackbarMessage("Error updating stock.");
@@ -47,12 +51,25 @@ const StockManagement = () => {
     }
   };
 
-  // Handle stock adjustment (increase or decrease)
+  // Handle increment/decrement
   const handleStockAdjustment = async (id, adjustment) => {
-    const updatedStock = stocks.find((stock) => stock._id === id);
-    if (updatedStock) {
-      updatedStock.quantity += adjustment;
-      await handleStockUpdate(updatedStock);
+    try {
+      const stock = stocks.find((s) => s._id === id);
+      if (!stock) return;
+
+      await axios.put(`${url}/api/stock/update`, {
+        productId: stock.productId._id,
+        quantity: adjustment,
+        type: "increment",
+      });
+
+      // Update local state
+      const updatedStocks = stocks.map((s) =>
+        s._id === id ? { ...s, quantity: s.quantity + adjustment } : s
+      );
+      setStocks(updatedStocks);
+    } catch (error) {
+      console.error("Error adjusting stock:", error);
     }
   };
 
@@ -60,7 +77,7 @@ const StockManagement = () => {
     <div className="stock-management-page">
       <h2>Stock Management</h2>
       {loading ? (
-        <Loading />  // Show loading spinner if data is being fetched
+        <Loading />
       ) : (
         <>
           {currentStockItem && (
@@ -69,10 +86,11 @@ const StockManagement = () => {
               onSubmit={handleStockUpdate}
             />
           )}
+
           <StockList
             stocks={stocks}
             onAdjustStock={handleStockAdjustment}
-            onEditStock={setCurrentStockItem}  // Ensure this is passing the correct item
+            onEditStock={setCurrentStockItem}
           />
         </>
       )}

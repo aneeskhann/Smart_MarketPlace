@@ -37,26 +37,21 @@ const createStock = async () => {
 };
 
 
-// Fetch all stock data
 const getAllStock = async (req, res) => {
-  
   try {
-    // Fetch stock data and populate product details
-    const stock = await Stock.find().populate('productId','title','category','price'); 
-    console.log('Fetched Stock:', stock); // Log the fetched stock data
+    const stock = await Stock.find().populate('productId', 'title price category');
 
-    // Check if stock is found
     if (!stock || stock.length === 0) {
-      console.log('No stock data available'); // Log when no stock data is found
       return res.status(404).json({ error: "No stock data available" });
     }
-    
+
     res.status(200).json(stock);
   } catch (error) {
     console.error("Error fetching stock:", error);
     res.status(500).json({ error: "Failed to fetch stock data" });
   }
 };
+
 
 // Fetch stock data for a specific product by its productId
 const getStockByProductId = async (req, res) => {
@@ -80,55 +75,45 @@ const getStockByProductId = async (req, res) => {
   }
 };
 
-// Update stock quantity (increase or decrease)
 const updateStock = async (req, res) => {
   try {
-    const { productId, quantity } = req.body;
+    const { productId, quantity, type } = req.body;
 
-    // Validation
-    if (!productId || quantity === undefined || quantity === null) {
+    // Validate input
+    if (!productId || quantity === undefined) {
       return res.status(400).json({ error: "Product ID and quantity are required" });
     }
 
-    if (quantity <= 0) {
-      return res.status(400).json({ error: "Quantity must be a positive number" });
-    }
-
-    // Check if the product exists
+    // Find the product and stock entry
     const product = await productsModel.findById(productId);
-    console.log('Fetched Product:', product); // Log the fetched product
+    if (!product) return res.status(404).json({ error: "Product not found" });
 
-    if (!product) {
-      return res.status(404).json({ error: "Product not found" });
-    }
-
-    // Find the existing stock entry for the product
     let stock = await Stock.findOne({ productId });
     if (!stock) {
-      // If no stock entry exists, create one
-      stock = new Stock({
-        productId,
-        quantity,
-      });
-      console.log('Stock created:', stock); // Log the created stock
-    } else {
-      // Update the existing stock entry
-      stock.quantity += quantity; // Increase or decrease based on quantity passed
-      console.log('Stock updated:', stock); // Log the updated stock
+      stock = new Stock({ productId, quantity: 0 });
     }
 
-    // Prevent stock from going negative (if your business rule requires this)
+    // Determine update type
+    if (type === "increment") {
+      stock.quantity += quantity;
+    } else if (type === "set") {
+      stock.quantity = quantity;
+    } else {
+      return res.status(400).json({ error: "Invalid update type" });
+    }
+
+    // Prevent negative stock
     if (stock.quantity < 0) {
       return res.status(400).json({ error: "Stock cannot go below zero" });
     }
 
     const updatedStock = await stock.save();
-    console.log("Stock saved:", updatedStock); // Log the saved stock
     res.status(200).json(updatedStock);
   } catch (error) {
     console.error("Error updating stock:", error);
     res.status(500).json({ error: "Failed to update stock" });
   }
 };
+
 
 export { updateStock, getStockByProductId, getAllStock,createStock };

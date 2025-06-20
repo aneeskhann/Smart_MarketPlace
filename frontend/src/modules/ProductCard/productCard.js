@@ -9,6 +9,7 @@ const ProductCard = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
+  const [liveStock, setLiveStock] = useState(null);
   const location = useLocation();
 
   useEffect(() => {
@@ -19,7 +20,6 @@ const ProductCard = () => {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(`${localApiUrl}/api/products/${id}`);
-        console.log("Product fetched from local DB:", response.data);
         setProduct(response.data);
       } catch (error) {
         console.error("Error fetching product:", error);
@@ -30,27 +30,48 @@ const ProductCard = () => {
     fetchProduct();
   }, [id]);
 
+  useEffect(() => {
+    const fetchStock = async () => {
+      try {
+        const response = await axios.get(`${localApiUrl}/api/stock/${id}`);
+        setLiveStock(response.data.quantity);
+      } catch (error) {
+        console.error("Error fetching stock:", error);
+        setLiveStock(null);
+      }
+    };
+
+    if (product) {
+      fetchStock();
+    }
+}, [product, id]);
+
+
   const handleCart = (product, redirect) => {
     if (!product) return;
 
-    // Check if the product is in stock
-    if (product.quantity <= 0) {
+    if (liveStock <= 0) {
       alert("Sorry, this product is out of stock!");
       return;
     }
 
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    const isProductExist = cart.find((item) => item.id === product.id || item._id === product._id);
+    const isProductExist = cart.find(
+      (item) => item.id === product.id || item._id === product._id
+    );
 
     if (isProductExist) {
       const updatedCart = cart.map((item) =>
-        (item.id === product.id || item._id === product._id) 
-          ? { ...item, quantity: item.quantity + 1 } 
+        item.id === product.id || item._id === product._id
+          ? { ...item, quantity: item.quantity + 1 }
           : item
       );
       localStorage.setItem("cart", JSON.stringify(updatedCart));
     } else {
-      localStorage.setItem("cart", JSON.stringify([...cart, { ...product, quantity: 1 }])); 
+      localStorage.setItem(
+        "cart",
+        JSON.stringify([...cart, { ...product, quantity: 1 }])
+      );
     }
 
     alert("Product Added To Cart!");
@@ -97,24 +118,35 @@ const ProductCard = () => {
                 Buy Now
               </button>
               <button
-                className="flex ml-6 text-white bg-blue-500 border-0 py-3 px-6   focus:outline-none hover:bg-blue-600 rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105"
+                className="flex ml-6 text-white bg-blue-500 border-0 py-3 px-6 focus:outline-none hover:bg-blue-600 rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105"
                 onClick={() => handleCart(product)}
               >
                 Add to Cart
               </button>
             </div>
 
-            {/* Display remaining quantity */}
+            {/* Live Stock Display */}
             <div className="mb-6">
               <p className="text-gray-600 text-lg">
-                {product.quantity > 0 ? `Remaining stock: ${product.quantity}` : "Out of Stock"}
+                {liveStock !== null
+                  ? liveStock > 0
+                    ? `Remaining stock: ${liveStock}`
+                    : "Out of Stock"
+                  : "Loading stock..."}
               </p>
             </div>
 
             {/* Optional Reviews or Ratings */}
             <div className="flex items-center mb-6">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className="w-6 h-6 text-yellow-500 mr-3" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                <path d="M12 17.3l6.4 3.7-1.6-7 5.2-4.5-6.8-.6L12 2 9.8 9.6l-6.8 .6 5.2 4.5-1.6 7z"/>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                className="w-6 h-6 text-yellow-500 mr-3"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path d="M12 17.3l6.4 3.7-1.6-7 5.2-4.5-6.8-.6L12 2 9.8 9.6l-6.8 .6 5.2 4.5-1.6 7z" />
               </svg>
               <span className="text-gray-600 text-lg">
                 {product.rating ? `${product.rating} Stars` : "No Ratings Yet"}

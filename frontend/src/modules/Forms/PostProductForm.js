@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { validateAndPostProduct } from "../../api/geminiApi"; // Updated API call
+import React, { useState, useEffect } from "react";
+import { validateAndPostProduct } from "../../api/geminiApi";
 import { useNavigate } from "react-router-dom";
 import { useDropzone } from "react-dropzone";
 
@@ -10,13 +10,28 @@ const PostProductForm = () => {
     price: "",
     description: "",
     category: "",
-    stock: "", // Added stock field
+    stock: "",
     image: null,
   });
 
-  const [validationMessage, setValidationMessage] = useState(""); // State to display validation response
-  const [loading, setLoading] = useState(false); // State to show loading while API request is in progress
-  const [isUrdu, setIsUrdu] = useState(false); // Toggle state for language
+  const [validationMessage, setValidationMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [isUrdu, setIsUrdu] = useState(false);
+
+  // ✅ NEW: fetch existing products to detect duplicates
+  const [existingProducts, setExistingProducts] = useState([]);
+  useEffect(() => {
+    const fetchExistingProducts = async () => {
+      try {
+        const res = await fetch("http://localhost:8000/api/products");
+        const data = await res.json();
+        setExistingProducts(data);
+      } catch (err) {
+        console.error("Error fetching existing products:", err);
+      }
+    };
+    fetchExistingProducts();
+  }, []);
 
   const handleChange = (e) => {
     setProductData({ ...productData, [e.target.name]: e.target.value });
@@ -32,21 +47,31 @@ const PostProductForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validation: Check if all fields are filled
     if (!productData.title || !productData.price || !productData.category || !productData.description || !productData.stock || !productData.image) {
       setValidationMessage(isUrdu ? "⚠️ براہ کرم تمام فیلڈز مکمل کریں اور ایک تصویر اپ لوڈ کریں۔" : "⚠️ Please fill in all fields and upload an image.");
       return;
     }
 
-    setLoading(true); // Start loading
-    setValidationMessage(""); // Clear previous messages
+    // ✅ NEW: Duplicate product check (by title + category)
+    const isDuplicate = existingProducts.some(
+      (p) =>
+        p.title.trim().toLowerCase() === productData.title.trim().toLowerCase() &&
+        p.category.trim().toLowerCase() === productData.category.trim().toLowerCase()
+    );
+    if (isDuplicate) {
+      setValidationMessage(isUrdu ? "⚠️ یہ پروڈکٹ پہلے سے موجود ہے۔" : "⚠️ This product already exists.");
+      return;
+    }
+
+    setLoading(true);
+    setValidationMessage("");
 
     const formData = new FormData();
     formData.append("title", productData.title);
     formData.append("price", productData.price);
     formData.append("description", productData.description);
     formData.append("category", productData.category);
-    formData.append("stock", productData.stock); // Append stock value
+    formData.append("stock", productData.stock);
     formData.append("image", productData.image);
 
     try {
@@ -57,12 +82,10 @@ const PostProductForm = () => {
         setValidationMessage(isUrdu ? `❌ ${response.error}` : `❌ ${response.error}`);
       } else if (response.message) {
         setValidationMessage(isUrdu ? `✅ ${response.message}` : `✅ ${response.message}`);
-
         if (response.product) {
-          setTimeout(() => navigate("/"), 2000); // Redirect after showing message
+          setTimeout(() => navigate("/"), 2000);
         }
       }
-      
     } catch (error) {
       setLoading(false);
       setValidationMessage(isUrdu ? "❌ پروڈکٹ پوسٹ کرنے میں خرابی ہوئی۔ دوبارہ کوشش کریں۔" : "❌ Error posting product. Please try again.");
@@ -78,7 +101,6 @@ const PostProductForm = () => {
       }
     },
   });
-
 
   return (
     <div className="w-full max-w-screen-lg bg-gray-50 mx-auto mt-10 p-8 shadow-2xl rounded-xl">
@@ -125,7 +147,6 @@ const PostProductForm = () => {
               />
             </div>
 
-            {/* Stock Input */}
             <div>
               <label className="block text-lg font-semibold mb-1 text-left ml-16">{isUrdu ? "اسٹاک:" : "Stock:"}</label>
               <input
@@ -169,16 +190,18 @@ const PostProductForm = () => {
             </div>
           </div>
         </div>
-        {/* Language Toggle Button */}
+
         <div className="flex justify-end mt-2">
           <button
             className="text-blue-500 text-lg font-semibold"
+            type="button"
             onClick={() => setIsUrdu(!isUrdu)}
           >
             {isUrdu ? "Switch to English" : "اردو میں تبدیل کریں"}
           </button>
         </div>
-        <div >
+
+        <div>
           <label className="block text-lg font-semibold mb-1 text-left ml-16">{isUrdu ? "تفصیل:" : "Description:"}</label>
           <textarea
             className="w-full ml-12 px-4 py-3 border-2 bg-transparent rounded-lg border-gray-300 text-black focus:ring-2 focus:ring-red-900 focus:outline-none h-36 hover:shadow-md hover:shadow-blue-300 hover:-translate-y-1 transition"
@@ -190,7 +213,6 @@ const PostProductForm = () => {
           ></textarea>
         </div>
 
-        {/* Validation Message Display */}
         {validationMessage && (
           <div className="mt-4 p-3 text-center font-semibold rounded-md bg-gray-100 border border-gray-300 text-gray-800 shadow-md">
             {validationMessage}

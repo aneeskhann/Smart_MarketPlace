@@ -9,25 +9,36 @@ const createProduct = async (req, res) => {
       return res.status(400).json({ error: "Please provide a valid quantity" });
     }
 
+    // 🔍 Check for duplicate product based on title and category
+    const existingProduct = await productsModel.findOne({
+      title: title.trim(),
+      category: category.trim()
+    });
+
+    if (existingProduct) {
+      return res.status(409).json({ error: "Product with this title and category already exists" });
+    }
+
     const newProduct = new productsModel({
       title,
       price,
       description,
       category,
-      image: req.file, // Assuming you're handling image uploads
+      image: req.file, // Ensure multer is configured properly
       rating,
-      quantity, // Stock quantity for the product
+      quantity,
     });
 
     const savedProduct = await newProduct.save();
-    console.log("Product created successfully:", savedProduct);
+    console.log("✅ Product created successfully:", savedProduct);
 
     res.status(201).json(savedProduct);
   } catch (error) {
-    console.error("Error creating product:", error);
+    console.error("❌ Error creating product:", error);
     res.status(500).json({ error: "Failed to create product" });
   }
 };
+
 
 // Fetch all products
 const getProducts = async (req, res) => {
